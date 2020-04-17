@@ -1,3 +1,4 @@
+# typed: false
 RSpec.describe Stenohttp2 do
   it "has a version number" do
     expect(Stenohttp2::VERSION).not_to be nil

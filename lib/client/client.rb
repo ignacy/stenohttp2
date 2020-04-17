@@ -1,3 +1,4 @@
+# typed: false
 require_relative 'helper'
 
 module Stenohttp2

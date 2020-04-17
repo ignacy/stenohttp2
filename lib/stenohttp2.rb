@@ -1,3 +1,4 @@
+# typed: strong
 require "stenohttp2/version"
 
 module Stenohttp2
