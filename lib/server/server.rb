@@ -3,14 +3,16 @@
 # typed: true
 
 require_relative '../stenohttp2/helper'
+require_relative './server_factory'
 
 class Server
   def initialize(opts = {})
     @port = opts.fetch(:port) { 8080 }
+    @server = ServerFactory.new(@port).start
   end
 
   def start
-    puts "Server listening on https://localhost:#{@port}"
+    puts "Server listening on https://localhost:#{port}"
     loop do
       sock = server.accept
       puts 'New TCP connection!'
@@ -96,30 +98,5 @@ class Server
 
   private
 
-  def server
-    @server ||= begin
-                  server = TCPServer.new(@port)
-                  ctx = OpenSSL::SSL::SSLContext.new
-                  ctx.cert = OpenSSL::X509::Certificate.new(File.open('keys/server.crt'))
-                  ctx.key = OpenSSL::PKey::RSA.new(File.open('keys/server.key'))
-
-                  ctx.ssl_version = :TLSv1_2
-                  ctx.options = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:options]
-                  ctx.ciphers = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers]
-
-                  ctx.alpn_protocols = ['h2']
-
-                  ctx.alpn_select_cb = lambda do |protocols|
-                    if protocols.index(DRAFT).nil?
-                      raise "Protocol #{DRAFT} is required"
-                    end
-
-                    DRAFT
-                  end
-
-                  ctx.ecdh_curves = 'P-256'
-
-                  OpenSSL::SSL::SSLServer.new(server, ctx)
-                end
-  end
+  attr_reader :server, :port
 end
