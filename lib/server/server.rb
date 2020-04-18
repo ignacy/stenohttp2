@@ -55,20 +55,12 @@ class Server
         stream.on(:half_close) do
           log.info 'client closed its end of the stream'
 
-          response = nil
-          if req[':method'] == 'POST'
-            log.info "Received POST request, payload: #{buffer}"
-            response = "Hello HTTP 2.0! POST payload: #{buffer}"
-          else
-            log.info 'Received GET request'
-            # TODO: Replace with html file
-            response = 'Hello HTTP 2.0! GET request'
-          end
+          response = File.read(File.join("public", "index.html"))
 
           stream.headers({
                            ':status' => '200',
                            'content-length' => response.bytesize.to_s,
-                           'content-type' => 'text/plain'
+                           'content-type' => 'text/html'
                          }, end_stream: false)
 
           # split response into multiple DATA frames

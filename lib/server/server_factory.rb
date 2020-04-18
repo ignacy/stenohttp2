@@ -2,11 +2,13 @@
 
 # typed: true
 
+require 'sorbet-runtime'
+
 # Server factory creates HTTP2 ready TCP server and sets up SSL keys
 class ServerFactory
   extend T::Sig
 
-  sig { params(port: T::Integer) }
+  sig { params(port: Integer).void }
   def initialize(port)
     @tcp_server = TCPServer.new(port)
   end
