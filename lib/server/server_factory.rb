@@ -3,6 +3,7 @@
 # typed: true
 
 require 'sorbet-runtime'
+require_relative '../stenohttp2/helper'
 
 # Server factory creates HTTP2 ready TCP server and sets up SSL keys
 class ServerFactory
