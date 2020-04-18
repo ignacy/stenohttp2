@@ -34,7 +34,7 @@ DEPENDENCIES
   bundler (~> 1.17)
   http-2
   rake (~> 10.0)
-  rspec (~> 3.0)
+  rspec
   sorbet
   sorbet-runtime
   stenohttp2!
