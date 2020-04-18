@@ -10,6 +10,7 @@ class Server
   end
 
   def start
+    puts "Server listening on https://localhost:#{@port}"
     loop do
       sock = server.accept
       puts 'New TCP connection!'
@@ -58,6 +59,7 @@ class Server
             response = "Hello HTTP 2.0! POST payload: #{buffer}"
           else
             log.info 'Received GET request'
+            # TODO: Replace with html file
             response = 'Hello HTTP 2.0! GET request'
           end
 
@@ -82,7 +84,7 @@ class Server
         # puts "Received bytes: #{data.unpack("H*").first}"
 
         begin
-          conn << data
+          conn.receive(data)
         rescue StandardError => e
           puts "#{e.class} exception: #{e.message} - closing socket."
           e.backtrace.each { |l| puts "\t" + l }
@@ -121,5 +123,3 @@ class Server
                 end
   end
 end
-
-Server.new.start
