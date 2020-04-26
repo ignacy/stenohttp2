@@ -8,47 +8,62 @@ require 'sorbet-runtime'
 class Protocol
   extend T::Sig
 
-  DEFAULT_KEY = "W\x11\x97\x8D\x7Ff3\xF0\xAB\xE2\x1A\x90\rk\x99\xDA"
-  DEFAULT_IV = "\xE4\fZ[\xB1\xC5\xF5\x85\r\x96\x7F\x90cH\x9D\x81"
-
-  sig { params(key: String, iv: String).void }
-  def initialize(key: DEFAULT_KEY, iv: DEFAULT_IV)
-    @key = key
-    @iv = iv
-  end
+  DEFAULT_SALT = OpenSSL::Random.random_bytes(16)
+  DEFAULT_PASSWORD = 'this is a secret'
 
   sig { params(text: String).returns(String) }
   def encode(text)
-    Encoder.new(key, iv).call(text)
+    Encrypter.new.call(text)
+  end
+
+  sig { params(text: String).returns(String) }
+  def decode(text)
+    Decrypter.new.call(text)
   end
 
   private
 
-  attr_reader :key, :iv
-
-  class Encoder
+  class Encrypter
     extend T::Sig
 
-    sig { params(key: String, iv: String).void }
-    def initialize(key, iv)
-      @key = key
-      @iv = iv
-    end
-
     def call(text)
-      data = cipher.update(text) + cipher.final
-      data = iv.force_encoding('ASCII-8BIT') + data
-      data = Base64.encode64(data)
-      CGI.escape(data)
+      encrypted = cipher.update(text) + cipher.final
+      CGI.escape(Base64.strict_encode64(encrypted))
     end
-
-    attr_reader :key, :iv
 
     def cipher
-      @cipher ||= OpenSSL::Cipher::AES.new(128, :CBC).tap do |cipher|
+      @cipher ||= OpenSSL::Cipher.new('aes256').tap do |cipher|
         cipher.encrypt
-        cipher.key = key
-        cipher.iv = iv
+        cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
+          Protocol::DEFAULT_PASSWORD,
+          Protocol::DEFAULT_SALT,
+          20_000,
+          cipher.key_len
+        )
+        cipher
+      end
+    end
+  end
+
+  class Decrypter
+    extend T::Sig
+
+    def call(text)
+      data = Base64.strict_decode64(CGI.unescape(text))
+
+      cipher.update(data) + cipher.final
+    end
+
+    def cipher
+      @cipher ||= OpenSSL::Cipher.new('aes256').tap do |cipher|
+        cipher.decrypt
+        cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
+          Protocol::DEFAULT_PASSWORD,
+          Protocol::DEFAULT_SALT,
+          20_000,
+          cipher.key_len
+        )
+        cipher
       end
     end
   end
