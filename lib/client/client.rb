@@ -5,25 +5,27 @@ require_relative '../stenohttp2/helper'
 
 class Client
   def initialize(opts = {})
-    @server_address = opts.fetch(:server_url) { 'http://localhost:8080' }
-    @data = "MY random string"
+    @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
+    @data = 'MY random string'
   end
 
   def start
     setup_connection_handlers
     setup_stream_handlers
     log.info 'Sending HTTP 2.0 request'
-    if head[':method'] == 'GET'
-      stream.headers(head, end_stream: true)
-    else
-      stream.headers(head, end_stream: false)
-      conn.ping('12132134')
-      stream.data(@data)
-    end
+
+    puts 'DOING GET'
+    conn.ping('12132134')
+    stream.headers(get_request, end_stream: false)
+
+    puts 'DOING POST'
+    conn.ping('12132135')
+    stream.headers(post_request, end_stream: false)
+    stream.data(@data)
 
     while !socket.closed? && !socket.eof?
       data = socket.read_nonblock(1024)
-      log.info "Received bytes: #{data.unpack("H*").first}"
+      log.info "Received bytes: #{data.unpack1('H*')}"
 
       begin
         conn << data
@@ -126,10 +128,20 @@ class Client
                 end
   end
 
-  def head
-    @head ||= {
+  def get_request
+    @get_request ||= {
       ':scheme' => server_uri.scheme,
-      ':method' => (@data.nil? ? 'GET' : 'POST'),
+      ':method' => 'GET',
+      ':authority' => [server_uri.host, server_uri.port].join(':'),
+      ':path' => server_uri.path,
+      'accept' => '*/*'
+    }
+  end
+
+  def post_request
+    @post_request ||= {
+      ':scheme' => server_uri.scheme,
+      ':method' => 'POST',
       ':authority' => [server_uri.host, server_uri.port].join(':'),
       ':path' => server_uri.path,
       'accept' => '*/*'
@@ -149,4 +161,4 @@ class Client
   end
 end
 
- # Client.new.start
+# Client.new.start
