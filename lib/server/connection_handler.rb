@@ -47,7 +47,7 @@ class ConnectionHandler
 
     def setup
       log = Stenohttp2::Logger.new(stream.id)
-      req = {}
+      req = T.let({}, T.untyped)
       buffer = ''
 
       stream.on(:active) { log.info 'client opened new stream' }

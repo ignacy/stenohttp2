@@ -31,7 +31,7 @@ class Server
           connection_handler.receive(data)
         rescue StandardError => e
           puts "#{e.class} exception: #{e.message} - closing socket."
-          e.backtrace.each { |l| puts "\t" + l }
+          T.must(e.backtrace).each { |l| puts "\t" + l }
           sock.close
         end
     end
