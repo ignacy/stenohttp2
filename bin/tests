@@ -1,0 +1,1 @@
+docker run ignacy/stenohttp2 rspec spec

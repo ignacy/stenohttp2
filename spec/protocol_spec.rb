@@ -16,5 +16,13 @@ RSpec.describe Protocol do
     expect(subject.decode(encoded)).to eq(secret)
   end
 
-  # TODO: change Base64 to huffman encoding
+  it 'encode as huffman code ' do
+    secret = 'Najlepsze kasztany sa na placu pigalle'
+    encoded = subject.encode(secret)
+ 
+    compressed = HuffmanCoder.encode(encoded).to_s
+    puts "Compressed #{compressed}"
+
+    expect(HuffmanCoder.decode(compressed)).to eq(encoded)
+  end
 end
