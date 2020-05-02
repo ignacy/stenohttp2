@@ -21,8 +21,7 @@ RSpec.describe Protocol do
     encoded = subject.encode(secret)
  
     compressed = HuffmanCoder.encode(encoded).to_s
-    puts "Compressed #{compressed}"
 
-    expect(HuffmanCoder.decode(compressed)).to eq(encoded)
+    expect(HuffmanCoder.decode(compressed).plaintext).to eq(encoded)
   end
 end
