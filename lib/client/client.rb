@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # typed: true
-require_relative '../stenohttp2/helper'
+require_relative '../helper'
 
 class Client
   def initialize(opts = {})

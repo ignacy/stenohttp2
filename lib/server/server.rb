@@ -4,7 +4,7 @@
 
 require_relative './server_factory'
 require_relative './connection_handler'
-require_relative '../stenohttp2/helper'
+require_relative '../helper'
 
 class Server
   def initialize(opts = {})

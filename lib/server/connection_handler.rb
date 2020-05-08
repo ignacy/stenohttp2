@@ -1,7 +1,7 @@
 # typed: true
 
 require 'forwardable'
-require_relative '../stenohttp2/helper'
+require_relative '../helper'
 
 class ConnectionHandler
   extend Forwardable
