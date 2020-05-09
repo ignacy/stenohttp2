@@ -8,7 +8,7 @@ require 'sorbet-runtime'
 class Protocol
   extend T::Sig
 
-  DEFAULT_SALT = OpenSSL::Random.random_bytes(16)
+  DEFAULT_SALT = "\xCA|k\xC3Qw(\xB1E\xF3<\xA7\xCC\x96$\x8A" # OpenSSL::Random.random_bytes(16)
   DEFAULT_PASSWORD = 'this is a secret'
 
   sig { params(text: String).returns(String) }

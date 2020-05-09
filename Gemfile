@@ -7,6 +7,9 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 gem 'sorbet', :group => :development
 gem 'rspec', :group => :development
+gem 'pry', :group => :development
+gem 'rubocop', :group => :development
+gem 'rubocop-rspec', :group => :development
 gem 'sorbet-runtime'
 
 gem "http-2"

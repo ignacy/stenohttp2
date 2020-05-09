@@ -1,6 +1,6 @@
 example_id                   | status | run_time        |
 ---------------------------- | ------ | --------------- |
-./spec/protocol_spec.rb[1:1] | passed | 0.01307 seconds |
-./spec/protocol_spec.rb[1:2] | passed | 0.02566 seconds |
-./spec/protocol_spec.rb[1:3] | passed | 0.02014 seconds |
-./spec/protocol_spec.rb[1:4] | passed | 0.01967 seconds |
+./spec/e2e_spec.rb[1:1]      | passed | 0.02525 seconds |
+./spec/protocol_spec.rb[1:1] | passed | 0.01247 seconds |
+./spec/protocol_spec.rb[1:2] | passed | 0.0252 seconds  |
+./spec/protocol_spec.rb[1:3] | passed | 0.01271 seconds |
