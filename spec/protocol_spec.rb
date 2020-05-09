@@ -15,12 +15,4 @@ RSpec.describe Protocol do
     expect(encoded).to_not eq(secret)
     expect(subject.decode(encoded)).to eq(secret)
   end
-
-  it 'encode as binary code ' do
-    secret = 'Najlepsze kasztany sa na placu pigalle'
-    encoded = subject.encode(secret)
-
-    compressed = Compressor.compress(encoded)
-    expect(Compressor.decompress(compressed)).to eq(encoded)
-  end
 end
