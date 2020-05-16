@@ -1,8 +1,0 @@
-example_id                     | status | run_time        |
------------------------------- | ------ | --------------- |
-./spec/compressor_spec.rb[1:1] | passed | 0.01275 seconds |
-./spec/e2e_spec.rb[1:1]        | passed | 0.0264 seconds  |
-./spec/framer_spec.rb[1:1]     | passed | 0.00012 seconds |
-./spec/framer_spec.rb[1:2]     | passed | 0.00006 seconds |
-./spec/protocol_spec.rb[1:1]   | passed | 0.01322 seconds |
-./spec/protocol_spec.rb[1:2]   | passed | 0.02553 seconds |

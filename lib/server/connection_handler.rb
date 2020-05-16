@@ -11,6 +11,7 @@ class ConnectionHandler
   def initialize(socket)
     @socket = socket
     @connection = HTTP2::Server.new
+    @communication = File.open('server_channel', 'w')
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -26,7 +27,6 @@ class ConnectionHandler
       puts "Received frame: #{frame.inspect}"
 
       if frame[:type] == :ping && frame[:payload].to_s.start_with?('1')
-        puts 'PING!'
         connection.ping('33333333')
       end
     end
@@ -45,6 +45,8 @@ class ConnectionHandler
       @stream = stream
     end
 
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/AbcSize
     def setup
       log = Stenohttp2::Logger.new(stream.id)
       req = T.let({}, T.untyped)
@@ -73,6 +75,8 @@ class ConnectionHandler
         stream.data(response.content[5...-1])
       end
     end
+    # rubocop:enable Metrics/MethodLength
+    # rubocop:enable Metrics/AbcSize
 
     private
 
@@ -85,6 +89,7 @@ class ConnectionHandler
       @stream = stream
     end
 
+    # We need this to be writable :reek:Attribute
     attr_accessor :content
 
     def build
