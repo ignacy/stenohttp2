@@ -5,24 +5,29 @@ require 'sorbet-runtime'
 class Framer
   extend T::Sig
 
-  sig { params(string: String).returns(T::Array[Integer]) }
+  sig { params(string: String).returns(T::Array[String]) }
   def to_numbers(string)
     numbers = []
-    groups = string.chars.each_slice(64).to_a
+
+    groups = to_bytesize(string, 8)
 
     groups.each do |slice|
-      text = slice.join
-      integer = text.to_i(2)
-      numbers << integer
+      integer = slice.to_i(2)
+      numbers << integer.to_s.rjust(8)
     end
 
     numbers
   end
 
-  sig { params(numbers: T::Array[Integer]).returns(String) }
+  sig { params(numbers: T::Array[String]).returns(String) }
   def numbers_to_binary_string(numbers)
-    out = T.must(numbers[0...-1]).map { |n| format('%0*b', 64, n) }
-    out << numbers.last.to_s(2) # last one is not padded
-    out.join('')
+    T.must(numbers).map { |n| format('%0*b', 8, n) }.join
+  end
+
+  private
+
+  sig { params(str: String, value: Integer).returns(T::Array[String]) }
+  def to_bytesize(str, value = 8)
+    str.unpack("a#{value}" * ((str.size / value) + (str.size % value > 0 ? 1 : 0)))
   end
 end

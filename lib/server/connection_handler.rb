@@ -11,7 +11,7 @@ class ConnectionHandler
   def initialize(socket)
     @socket = socket
     @connection = HTTP2::Server.new
-    @communication = File.open('server_channel', 'w')
+    @communication = File.open('server_channel', 'a')
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -26,8 +26,11 @@ class ConnectionHandler
     connection.on(:frame_received) do |frame|
       puts "Received frame: #{frame.inspect}"
 
-      if frame[:type] == :ping && frame[:payload].to_s.start_with?('1')
-        connection.ping('33333333')
+      if frame[:type] == :ping
+        payload = frame[:payload]
+        communication.write(payload)
+        communication.flush
+        #connection.ping('33333333')
       end
     end
 
@@ -108,5 +111,5 @@ class ConnectionHandler
     attr_reader :stream
   end
 
-  attr_reader :connection, :socket
+  attr_reader :connection, :socket, :communication
 end

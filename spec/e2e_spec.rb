@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe 'Cupher encode and split the message and assemble + decode it' do
   let(:secret) { 'Najlepsze kasztany sa na placu pigalle' }
 
-  it 'should split message into 64bit numbers' do
+  it 'should split message into 8bits' do
     encoded = Protocol.new.encode(secret)
     compressed = Compressor.compress(encoded)
     numbers = Framer.new.to_numbers(compressed)

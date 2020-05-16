@@ -2,24 +2,31 @@
 
 # typed: true
 require_relative '../helper'
+require_relative '../message'
 
+# rubocop:disable Metrics/ClassLength
 class Client
   def initialize(opts = {})
     @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
     @data = 'MY random string'
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def start
     setup_connection_handlers
     setup_stream_handlers
     log.info 'Sending HTTP 2.0 request'
 
     puts 'DOING GET'
-    conn.ping('12132134')
     stream.headers(get_request, end_stream: false)
 
+    message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
+    message.numbers.each do |number|
+      puts "SENDING #{number}"
+      conn.ping(number.to_s)
+    end
+
     puts 'DOING POST'
-    conn.ping('12132135')
     stream.headers(post_request, end_stream: false)
     stream.data(@data)
 
@@ -36,6 +43,7 @@ class Client
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def setup_connection_handlers
     conn.on(:frame) do |bytes|
@@ -160,5 +168,4 @@ class Client
     @log ||= Stenohttp2::Logger.new(stream.id)
   end
 end
-
-# Client.new.start
+# rubocop:enable Metrics/ClassLength

@@ -11,5 +11,6 @@ gem 'pry', :group => :development
 gem 'rubocop', :group => :development
 gem 'rubocop-rspec', :group => :development
 gem 'sorbet-runtime'
+gem 'listen', '~> 3.0'
 
 gem "http-2"
