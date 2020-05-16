@@ -3,3 +3,7 @@ Style/FrozenStringLiteralComment:
 
 Style/Documentation:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: true
+  Max: 20 # Lots of long block methods

@@ -3,4 +3,4 @@
 require "bundler/setup"
 require_relative "../lib/watcher"
 
-Watcher.new.start
+Watcher.new('tmp/server').start

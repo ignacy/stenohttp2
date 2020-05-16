@@ -12,11 +12,11 @@ class Server
     @server = ServerFactory.new(@port).start
   end
 
+  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def start
     puts "Server listening on https://localhost:#{port}"
     loop do
       sock = server.accept
-      puts 'New TCP connection!'
       connection_handler = ConnectionHandler.new(sock).setup
 
       while !sock.closed? && !(begin
@@ -25,7 +25,6 @@ class Server
                                  true
                              end)
         data = sock.readpartial(1024)
-        # puts "Received bytes: #{data.unpack("H*").first}"
 
         begin
           connection_handler.receive(data)
@@ -34,9 +33,10 @@ class Server
           T.must(e.backtrace).each { |l| puts "\t" + l }
           sock.close
         end
-    end
+      end
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   private
 

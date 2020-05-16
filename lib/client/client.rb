@@ -21,10 +21,12 @@ class Client
     stream.headers(get_request, end_stream: false)
 
     message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
+    conn.ping("11111111") # poczatek komunikacji
     message.numbers.each do |number|
       puts "SENDING #{number}"
       conn.ping(number.to_s)
     end
+    conn.ping("11111111") # koniec komunikacji
 
     puts 'DOING POST'
     stream.headers(post_request, end_stream: false)

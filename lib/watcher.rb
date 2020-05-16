@@ -6,9 +6,13 @@ require_relative 'compressor'
 require_relative 'protocol'
 
 class Watcher
+  def initialize(dir)
+    @dir = dir
+  end
+
   def start
-    listener = Listen.to('/Users/ignacy/code/stenohttp2', only: /channel$/) do |modified, _added, _removed|
-      if modified && modified.first
+    listener = Listen.to(@dir, only: /\.message$/) do |modified, _added, _removed|
+      if modified&.first
         puts "Found modifications to #{modified}"
         process(File.read(modified.first))
       end
