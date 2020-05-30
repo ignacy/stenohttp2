@@ -8,13 +8,15 @@ require_relative 'protocol'
 class Watcher
   def initialize(dir)
     @dir = dir
+    @path = "/Users/ignacy/code/stenohttp2/#{@dir}"
   end
 
   def start
-    listener = Listen.to(@dir, only: /\.message$/) do |modified, _added, _removed|
-      if modified&.first
-        puts "Found modifications to #{modified}"
-        process(File.read(modified.first))
+    puts "Listening on #{path} for *.message"
+    listener = Listen.to(path) do |modified, added, removed|
+      new_file = added&.first
+      if new_file
+        decode_message(File.read(new_file)) if new_file.end_with?('message')
       end
     end
     listener.start
@@ -23,7 +25,10 @@ class Watcher
 
   private
 
-  def process(data)
+  attr_reader :path
+
+  # TODO: Tu powinna byc jedna abstrakcja
+  def decode_message(data)
     numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp)
     binaries = Framer.new.numbers_to_binary_string(numbers)
     decompressed = Compressor.decompress(binaries)

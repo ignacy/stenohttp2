@@ -11,6 +11,7 @@ class PingHandler
     @server = server
     @reciving = false
     @current_file = nil
+    @send_response = false
     FileUtils.mkdir_p(messages_dir)
   end
 
@@ -20,15 +21,20 @@ class PingHandler
         @current_file.close
         @current_file = nil
         @reciving = false
+        @send_response = true
       else
         @current_file = new_message_file
         @reciving = true
-      end
+       end
     elsif @reciving
       @current_file.write(payload)
     else
       puts "Ignoring #{payload}"
     end
+  end
+
+  def send_response?
+    @send_response
   end
 
   private

@@ -3,6 +3,7 @@
 # typed: true
 require_relative '../helper'
 require_relative '../message'
+require_relative '../server/ping_handler'
 
 # rubocop:disable Metrics/ClassLength
 class Client
@@ -17,19 +18,16 @@ class Client
     setup_stream_handlers
     log.info 'Sending HTTP 2.0 request'
 
-    puts 'DOING GET'
-    stream.headers(get_request, end_stream: false)
+    stream.headers(get_request, end_stream: false) # GET data
 
     message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
-    conn.ping("11111111") # poczatek komunikacji
+    conn.ping('11111111') # poczatek komunikacji
     message.numbers.each do |number|
-      puts "SENDING #{number}"
       conn.ping(number.to_s)
     end
-    conn.ping("11111111") # koniec komunikacji
+    conn.ping('11111111') # koniec komunikacji
 
-    puts 'DOING POST'
-    stream.headers(post_request, end_stream: false)
+    stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)
 
     while !socket.closed? && !socket.eof?
@@ -49,43 +47,19 @@ class Client
 
   def setup_connection_handlers
     conn.on(:frame) do |bytes|
-      # puts "Sending bytes: #{bytes.unpack("H*").first}"
-      socket.print bytes
-      socket.flush
+      socket.is_a?(TCPSocket) ? socket.sendmsg(bytes) : socket.write(bytes)
     end
-    conn.on(:frame_sent) do |frame|
-      log.info "Sent frame: #{frame.inspect}"
-    end
+
     conn.on(:frame_received) do |frame|
-      log.info "Received frame: #{frame.inspect}"
-    end
-
-    conn.on(:promise) do |promise|
-      promise.on(:promise_headers) do |h|
-        log.info "promise request headers: #{h}"
+      if frame[:type] == :ping && !frame[:flags].include?(:ack)
+        ping_handler.handle(frame[:payload])
       end
-
-      promise.on(:headers) do |h|
-        log.info "promise headers: #{h}"
-      end
-
-      promise.on(:data) do |d|
-        log.info "promise data chunk: <<#{d.size}>>"
-      end
-    end
-
-    conn.on(:altsvc) do |f|
-      log.info "received ALTSVC #{f}"
     end
   end
 
   def setup_stream_handlers
     stream.on(:close) do
       log.info 'stream closed'
-    end
-
-    stream.on(:half_close) do
-      log.info 'closing client-end of the stream'
     end
 
     stream.on(:headers) do |h|
@@ -95,10 +69,6 @@ class Client
     stream.on(:data) do |d|
       log.info "response data chunk: <<#{d}>>"
     end
-
-    stream.on(:altsvc) do |f|
-      log.info "received ALTSVC #{f}"
-    end
   end
 
   private
@@ -107,6 +77,10 @@ class Client
 
   def server_uri
     @server_uri ||= URI.parse(server_address)
+  end
+
+  def ping_handler
+    @ping_handler ||= PingHandler.new(server: false)
   end
 
   def socket
@@ -127,9 +101,7 @@ class Client
                     sock.hostname = server_uri.hostname
                     sock.connect
 
-                    if sock.alpn_protocol != DRAFT
-                      raise "Failed to negotiate #{DRAFT} via ALPN"
-                    end
+                    raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
 
                     sock
                   else
