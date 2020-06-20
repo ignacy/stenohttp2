@@ -5,8 +5,10 @@ require_relative '../helper'
 require_relative 'stream_handler'
 require_relative 'ping_handler'
 require_relative '../message'
+require_relative './server'
 
 class ConnectionHandler
+  SERVER_PING_DELAY = 0.05
   extend Forwardable
 
   def_delegators :@connection, :receive
@@ -27,11 +29,13 @@ class ConnectionHandler
 
         if ping_handler.send_response?
           message = Message.new('Komunikacja przyjeta. Bez odbioru')
-          connection.ping('11111111') # poczatek komunikacji
+          connection.ping(Server::SERVER_IDENTIFIER)
           message.numbers.each do |number|
-            connection.ping(number.to_s)
+            connection.ping(number.to_s.rjust(8))
+            sleep SERVER_PING_DELAY
           end
-          connection.ping('11111111') # koniec komunikacji
+          connection.ping(Server::SERVER_IDENTIFIER)
+          ping_handler.send_response(false)
         end
       end
 

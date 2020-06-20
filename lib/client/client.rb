@@ -7,6 +7,9 @@ require_relative '../server/ping_handler'
 
 # rubocop:disable Metrics/ClassLength
 class Client
+  CLIENT_PING_DELAY = 0.1.freeze
+  CLIENT_IDENTIFIER = '65535'.rjust(8).freeze
+
   def initialize(opts = {})
     @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
     @data = 'MY random string'
@@ -21,11 +24,12 @@ class Client
     stream.headers(get_request, end_stream: false) # GET data
 
     message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
-    conn.ping('11111111') # poczatek komunikacji
+    conn.ping(CLIENT_IDENTIFIER)
     message.numbers.each do |number|
-      conn.ping(number.to_s)
+      conn.ping(number.to_s.rjust(8))
+      sleep CLIENT_PING_DELAY
     end
-    conn.ping('11111111') # koniec komunikacji
+    conn.ping(CLIENT_IDENTIFIER)
 
     stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)

@@ -1,7 +1,6 @@
 # typed: true
 
 require 'listen'
-require_relative 'framer'
 require_relative 'compressor'
 require_relative 'protocol'
 
@@ -13,8 +12,8 @@ class Watcher
 
   def start
     puts "Listening on #{path} for *.message"
-    listener = Listen.to(path) do |modified, added, removed|
-      new_file = added&.first
+    listener = Listen.to(path) do |modified, added, _|
+      new_file = added&.first || modified&.first
       if new_file
         decode_message(File.read(new_file)) if new_file.end_with?('message')
       end
@@ -29,12 +28,11 @@ class Watcher
 
   # TODO: Tu powinna byc jedna abstrakcja
   def decode_message(data)
-    numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp)
-    binaries = Framer.new.numbers_to_binary_string(numbers)
-    decompressed = Compressor.decompress(binaries)
+    numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp).map(&:to_i)
+    decompressed = Compressor.decompress(numbers)
     message = Protocol.new.decode(decompressed)
-    puts "Received message: #{message}"
-  rescue StandardError
-    puts 'Coudlnt read the data'
+    puts "Received message: \n\t #{message} \n"
+  rescue StandardError => ex
+    puts "Could not read the data #{ex} [Message incomplete?]"
   end
 end

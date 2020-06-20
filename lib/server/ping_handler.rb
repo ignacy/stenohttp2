@@ -1,11 +1,12 @@
 # typed: true
 
 require 'fileutils'
+require_relative '../client/client'
+require_relative './server'
 
 class PingHandler
   SERVER_MESSAGES_DIR = 'tmp/server'.freeze
   CLIENT_MESSAGES_DIR = 'tmp/client'.freeze
-  MESSAGE_START_END = '11111111'.freeze
 
   def initialize(server: true)
     @server = server
@@ -16,7 +17,7 @@ class PingHandler
   end
 
   def handle(payload)
-    if payload == MESSAGE_START_END
+    if payload == Server::SERVER_IDENTIFIER || payload == Client::CLIENT_IDENTIFIER
       if @reciving
         @current_file.close
         @current_file = nil
@@ -25,7 +26,7 @@ class PingHandler
       else
         @current_file = new_message_file
         @reciving = true
-       end
+      end
     elsif @reciving
       @current_file.write(payload)
     else
@@ -37,10 +38,14 @@ class PingHandler
     @send_response
   end
 
+  def send_response=(val)
+    @send_response = val
+  end
+
   private
 
   def new_message_file
-    timestamp = Time.now.strftime('%Y-%m-%d-%H-%M-%S')
+    timestamp = Time.now.strftime('%Y-%m-%d-%H-%M')
     File.open("#{messages_dir}/#{timestamp}.message", 'a')
   end
 
