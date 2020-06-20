@@ -2,7 +2,6 @@
 require "bundler/setup"
 require "stenohttp2"
 require_relative "../lib/protocol"
-require_relative "../lib/framer"
 require_relative "../lib/compressor"
 p
 RSpec.configure do |config|

@@ -32,7 +32,7 @@ class Protocol
     end
 
     def cipher
-      @cipher ||= OpenSSL::Cipher.new('aes256').tap do |cipher|
+      @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
         cipher.encrypt
         cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
           Protocol::DEFAULT_PASSWORD,
@@ -55,7 +55,7 @@ class Protocol
     end
 
     def cipher
-      @cipher ||= OpenSSL::Cipher.new('aes256').tap do |cipher|
+      @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
         cipher.decrypt
         cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
           Protocol::DEFAULT_PASSWORD,

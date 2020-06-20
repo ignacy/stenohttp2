@@ -2,10 +2,11 @@
 
 class Compressor
   def self.compress(text)
-    text.unpack1('b*')
+    # Q | An Unsigned Integer per 8 Bytes
+    text.unpack("Q*")
   end
 
-  def self.decompress(text)
-    [text].pack('b*')
+  def self.decompress(numbers)
+    numbers.pack('Q*')
   end
 end
