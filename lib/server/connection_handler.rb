@@ -30,12 +30,12 @@ class ConnectionHandler
         if ping_handler.send_response?
           message = Message.new('Komunikacja przyjeta. Bez odbioru')
           connection.ping(Server::SERVER_IDENTIFIER)
-          message.numbers.each do |number|
-            connection.ping(number.to_s.rjust(8))
+          message.parts.each do |part|
+            connection.ping(part)
             sleep SERVER_PING_DELAY
           end
           connection.ping(Server::SERVER_IDENTIFIER)
-          ping_handler.send_response(false)
+          ping_handler.send_response = false
         end
       end
 

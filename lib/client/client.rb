@@ -25,8 +25,8 @@ class Client
 
     message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
     conn.ping(CLIENT_IDENTIFIER)
-    message.numbers.each do |number|
-      conn.ping(number.to_s.rjust(8))
+    message.parts.each do |part|
+      conn.ping(part)
       sleep CLIENT_PING_DELAY
     end
     conn.ping(CLIENT_IDENTIFIER)

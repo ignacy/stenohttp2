@@ -28,7 +28,7 @@ class Watcher
 
   # TODO: Tu powinna byc jedna abstrakcja
   def decode_message(data)
-    numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp).map(&:to_i)
+    numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp)
     decompressed = Compressor.decompress(numbers)
     message = Protocol.new.decode(decompressed)
     puts "Received message: \n\t #{message} \n"

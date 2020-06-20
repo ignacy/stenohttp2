@@ -7,11 +7,11 @@ RSpec.describe 'Cupher encode and split the message and assemble + decode it' do
 
   it 'should split message into 8bits' do
     encoded = Protocol.new.encode(secret)
-    numbers = Compressor.compress(encoded)
+    parts = Compressor.compress(encoded)
 
     # Numbers is what we send over the network...
     # And on the other side:
-    decompressed = Compressor.decompress(numbers)
+    decompressed = Compressor.decompress(parts)
     expect(decompressed).to eq(encoded)
 
     message = Protocol.new.decode(decompressed)
