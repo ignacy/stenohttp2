@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 # typed: true
-require 'securerandom'
 require_relative '../helper'
 require_relative '../message'
+require_relative '../sender'
 require_relative '../server/ping_handler'
 
 # rubocop:disable Metrics/ClassLength
@@ -24,22 +24,12 @@ class Client
 
     stream.headers(get_request, end_stream: false) # GET data
 
-    message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
-
-    random_messages_count = rand(10)
-    (1..random_messages_count).each do |_i|
-      conn.ping(SecureRandom.hex(4))
-    end
-
-    conn.ping(CLIENT_IDENTIFIER)
-    message_size = message.parts.size
-    conn.ping(message_size.to_s(2).rjust(8, '0'))
-
-    message.parts.each do |part|
-      conn.ping(part)
-      sleep CLIENT_PING_DELAY
-    end
-    conn.ping(SecureRandom.hex(4))
+    Sender.new(
+      message: Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
+      connection: conn,
+      identifier: CLIENT_IDENTIFIER,
+      delay: CLIENT_PING_DELAY
+    ).call
 
     stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)
