@@ -1,7 +1,7 @@
 # typed: true
 
 require 'listen'
-require_relative 'compressor'
+require_relative 'message'
 require_relative 'protocol'
 
 class Watcher
@@ -29,8 +29,7 @@ class Watcher
   # TODO: Tu powinna byc jedna abstrakcja
   def decode_message(data)
     numbers = data.split(/\s+/).reject(&:empty?).map(&:chomp)
-    decompressed = Compressor.decompress(numbers)
-    message = Protocol.new.decode(decompressed)
+    message = Protocol.new.decompress_and_decode(numbers)
     puts "Received message: \n\t #{message} \n"
   rescue StandardError => ex
     puts "Could not read the data #{ex} [Message incomplete?]"

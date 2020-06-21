@@ -21,6 +21,10 @@ class Protocol
     Decrypter.new.call(text)
   end
 
+  def decompress_and_decode(message)
+    decode(message.join.strip)
+  end
+
   private
 
   class Encrypter
