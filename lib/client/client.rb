@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 # typed: true
+require 'securerandom'
 require_relative '../helper'
 require_relative '../message'
 require_relative '../server/ping_handler'
 
 # rubocop:disable Metrics/ClassLength
 class Client
-  CLIENT_PING_DELAY = 0.1.freeze
-  CLIENT_IDENTIFIER = '65535'.rjust(8).freeze
+  CLIENT_PING_DELAY = 0.1
+  CLIENT_IDENTIFIER = 'client01'
 
   def initialize(opts = {})
     @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
@@ -24,12 +25,21 @@ class Client
     stream.headers(get_request, end_stream: false) # GET data
 
     message = Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko')
+
+    random_messages_count = rand(10)
+    (1..random_messages_count).each do |_i|
+      conn.ping(SecureRandom.hex(4))
+    end
+
     conn.ping(CLIENT_IDENTIFIER)
+    message_size = message.parts.size
+    conn.ping(message_size.to_s(2).rjust(8, '0'))
+
     message.parts.each do |part|
       conn.ping(part)
       sleep CLIENT_PING_DELAY
     end
-    conn.ping(CLIENT_IDENTIFIER)
+    conn.ping(SecureRandom.hex(4))
 
     stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)
@@ -55,9 +65,7 @@ class Client
     end
 
     conn.on(:frame_received) do |frame|
-      if frame[:type] == :ping && !frame[:flags].include?(:ack)
-        ping_handler.handle(frame[:payload])
-      end
+      ping_handler.handle(frame[:payload]) if frame[:type] == :ping && !frame[:flags].include?(:ack)
     end
   end
 

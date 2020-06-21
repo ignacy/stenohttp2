@@ -1,5 +1,6 @@
 # typed: true
 
+require 'securerandom'
 require 'forwardable'
 require_relative '../helper'
 require_relative 'stream_handler'
@@ -29,12 +30,22 @@ class ConnectionHandler
 
         if ping_handler.send_response?
           message = Message.new('Komunikacja przyjeta. Bez odbioru')
+
+          random_messages_count = rand(10)
+          (1..random_messages_count).each do |_i|
+            connection.ping(SecureRandom.hex(4))
+          end
+
           connection.ping(Server::SERVER_IDENTIFIER)
+          message_size = message.parts.size
+          connection.ping(message_size.to_s(2).rjust(8, '0'))
+
           message.parts.each do |part|
             connection.ping(part)
             sleep SERVER_PING_DELAY
           end
-          connection.ping(Server::SERVER_IDENTIFIER)
+          connection.ping(SecureRandom.hex(4))
+
           ping_handler.send_response = false
         end
       end

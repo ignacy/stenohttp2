@@ -12,25 +12,34 @@ class PingHandler
     @server = server
     @reciving = false
     @current_file = nil
+    @count_processed = false
+    @messages_left = 0
     @send_response = false
     FileUtils.mkdir_p(messages_dir)
   end
 
   def handle(payload)
     if payload == Server::SERVER_IDENTIFIER || payload == Client::CLIENT_IDENTIFIER
-      if @reciving
+      @reciving = true
+      @current_file = new_message_file
+    elsif @reciving
+      if !@count_processed
+        # First ping has the message count
+        @messages_left = payload.to_s.to_i(2)
+        @count_processed = true
+      elsif @messages_left > 0
+        @current_file.write(payload)
+        @messages_left -= 1
+      elsif @messages_left == 0
         @current_file.close
         @current_file = nil
         @reciving = false
         @send_response = true
       else
-        @current_file = new_message_file
-        @reciving = true
+        puts "Ignoring #{payload}"
       end
-    elsif @reciving
-      @current_file.write(payload)
     else
-      puts "Ignoring #{payload}"
+      puts "Not reciving / Ignoring #{payload}"
     end
   end
 
