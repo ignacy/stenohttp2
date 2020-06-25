@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 # typed: true
-
+require 'securerandom'
 require_relative './server_factory'
 require_relative './connection_handler'
 require_relative '../helper'
 
 class Server
-  SERVER_IDENTIFIER = 'server01'.freeze
+  SERVER_IDENTIFIER = SecureRandom.hex(4).freeze
 
   def initialize(opts = {})
     @port = opts.fetch(:port) { 8080 }

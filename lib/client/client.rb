@@ -11,7 +11,7 @@ require_relative '../server/ping_handler'
 # rubocop:disable Metrics/ClassLength
 class Client
   CLIENT_PING_DELAY = 0.1
-  CLIENT_IDENTIFIER = 'client01'
+  CLIENT_IDENTIFIER = SecureRandom.hex(4).freeze
 
   def initialize(opts = {})
     @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
