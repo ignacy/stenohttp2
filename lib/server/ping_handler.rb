@@ -25,7 +25,7 @@ class PingHandler
     elsif @reciving
       if !@count_processed
         # First ping has the message count
-        @messages_left = payload.to_s.to_i(2)
+        @messages_left = payload.to_s.split('u').first.to_i
         @count_processed = true
       elsif @messages_left > 0
         @current_file.write(payload)

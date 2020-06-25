@@ -30,7 +30,8 @@ class Sender
     sleep delay
     connection.ping(identifier)
     sleep delay
-    connection.ping(number_of_message_frames.to_s(2).rjust(8, '0'))
+    # connection.ping(number_of_message_frames.to_s(2).rjust(8, '0'))
+    connection.ping("#{number_of_message_frames}u#{SecureRandom.alphanumeric(8 - 1 - number_of_message_frames.to_s.size)}")
     sleep delay
     message.parts.each do |part|
       connection.ping(part)
