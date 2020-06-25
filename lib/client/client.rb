@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 # typed: true
+
+require 'securerandom'
 require_relative '../helper'
 require_relative '../message'
 require_relative '../sender'
@@ -24,6 +26,15 @@ class Client
 
     stream.headers(get_request, end_stream: false) # GET data
 
+    Thread.current[:sending] = true
+    Thread.new do
+      while Thread.current[:sending] == true
+        conn.ping(SecureRandom.hex(4))
+        sleep CLIENT_PING_DELAY
+      end
+    end
+
+    Thread.current[:sending] = false
     Sender.new(
       message: Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
       connection: conn,
@@ -31,9 +42,18 @@ class Client
       delay: CLIENT_PING_DELAY
     ).call
 
+    Thread.current[:sending] = true
+    Thread.new do
+      while Thread.current[:sending] == true
+        conn.ping(SecureRandom.hex(4))
+        sleep CLIENT_PING_DELAY
+      end
+    end
+
     stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)
 
+    Thread.current[:sending] = false
     while !socket.closed? && !socket.eof?
       data = socket.read_nonblock(1024)
       log.info "Received bytes: #{data.unpack1('H*')}"

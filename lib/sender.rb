@@ -25,14 +25,19 @@ class Sender
   def call
     (1..number_of_random_messages_to_send).each do |_i|
       connection.ping(random_8_byte_string)
+      sleep delay
     end
+    sleep delay
     connection.ping(identifier)
+    sleep delay
     connection.ping(number_of_message_frames.to_s(2).rjust(8, '0'))
+    sleep delay
     message.parts.each do |part|
       connection.ping(part)
       sleep delay
     end
     connection.ping(random_8_byte_string)
+    sleep delay
   end
 
   private
