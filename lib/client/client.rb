@@ -11,7 +11,7 @@ require_relative '../server/ping_handler'
 # rubocop:disable Metrics/ClassLength
 class Client
   CLIENT_PING_DELAY = 0.1
-  CLIENT_IDENTIFIER = SecureRandom.hex(4).freeze
+  CLIENT_IDENTIFIER = 'ccxin6f5'
 
   def initialize(opts = {})
     @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
@@ -25,16 +25,15 @@ class Client
     log.info 'Sending HTTP 2.0 request'
 
     stream.headers(get_request, end_stream: false) # GET data
-
-    Thread.current[:sending] = true
-    Thread.new do
-      while Thread.current[:sending] == true
+    pinger = Thread.new do
+      loop do
         conn.ping(SecureRandom.hex(4))
         sleep CLIENT_PING_DELAY
       end
     end
 
-    Thread.current[:sending] = false
+    Thread.kill(pinger)
+
     Sender.new(
       message: Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
       connection: conn,
@@ -42,9 +41,8 @@ class Client
       delay: CLIENT_PING_DELAY
     ).call
 
-    Thread.current[:sending] = true
-    Thread.new do
-      while Thread.current[:sending] == true
+    pinger = Thread.new do
+      loop do
         conn.ping(SecureRandom.hex(4))
         sleep CLIENT_PING_DELAY
       end
@@ -53,7 +51,7 @@ class Client
     stream.headers(post_request, end_stream: false) # POST data
     stream.data(@data)
 
-    Thread.current[:sending] = false
+    Thread.kill(pinger)
     while !socket.closed? && !socket.eof?
       data = socket.read_nonblock(1024)
       log.info "Received bytes: #{data.unpack1('H*')}"

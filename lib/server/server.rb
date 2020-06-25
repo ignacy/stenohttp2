@@ -7,7 +7,7 @@ require_relative './connection_handler'
 require_relative '../helper'
 
 class Server
-  SERVER_IDENTIFIER = SecureRandom.hex(4).freeze
+  SERVER_IDENTIFIER = 'r2ssbxv8'
 
   def initialize(opts = {})
     @port = opts.fetch(:port) { 8080 }
