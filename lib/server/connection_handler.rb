@@ -29,27 +29,32 @@ class ConnectionHandler
         ping_handler.handle(frame[:payload]) if frame[:type] == :ping && !frame[:flags].include?(:ack)
 
         if ping_handler.send_response?
-          Sender.new(
-            message: Message.new('Komunikacja przyjeta. Bez odbioru'),
-            connection: connection,
-            identifier: Server::SERVER_IDENTIFIER,
-            delay: SERVER_PING_DELAY
-          ).call
+          sender(connection).call
           ping_handler.send_response = false
         end
       end
 
-      connection.on(:stream) do |stream|
-        StreamHandler.new(stream).setup
-      end
+      connection.on(:stream) { |s| StreamHandler.new(s).setup }
     end
   end
-  # rubocop:enable
 
   private
 
   def ping_handler
     @ping_handler ||= PingHandler.new(server: true)
+  end
+
+  def response
+    Message.new('message received.')
+  end
+
+  def sender(connection)
+    Sender.new(
+      message: response_message,
+      connection: connection,
+      identifier: Server::SERVER_IDENTIFIER,
+      delay: SERVER_PING_DELAY
+    )
   end
 
   attr_reader :connection, :socket

@@ -1,9 +1,0 @@
-detectors:
-  UncommunicativeVariableName:
-    enabled: false
-  DuplicateMethodCall:
-    enabled: false
-  TooManyStatements:
-    enabled: false
-  IrresponsibleModule:
-    enabled: false
