@@ -14,7 +14,7 @@ class Client
   CLIENT_IDENTIFIER = 'ccxin6f5'
 
   def initialize(opts = {})
-    @server_address = opts.fetch(:server_url) { 'https://localhost:8080' }
+    @server_address = opts.fetch(:server_url, 'https://localhost:8080')
     @data = 'MY random string'
   end
 
@@ -60,7 +60,7 @@ class Client
         conn << data
       rescue StandardError => e
         log.info "#{e.class} exception: #{e.message} - closing socket."
-        T.must(e.backtrace).each { |l| puts "\t" + l }
+        T.must(e.backtrace).each { |l| puts "\t#{l}" }
         socket.close
       end
     end
@@ -105,29 +105,29 @@ class Client
 
   def socket
     @socket ||= begin
-                  tcp = TCPSocket.new(server_uri.host, server_uri.port)
+      tcp = TCPSocket.new(server_uri.host, server_uri.port)
 
-                  if server_uri.scheme == 'https'
-                    ctx = OpenSSL::SSL::SSLContext.new
-                    ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
-                    ctx.alpn_protocols = [DRAFT]
-                    ctx.alpn_select_cb = lambda do |protocols|
-                      log.warn "ALPN protocols supported by server: #{protocols}"
-                      DRAFT if protocols.include? DRAFT
-                    end
+      if server_uri.scheme == 'https'
+        ctx = OpenSSL::SSL::SSLContext.new
+        ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        ctx.alpn_protocols = [DRAFT]
+        ctx.alpn_select_cb = lambda do |protocols|
+          log.warn "ALPN protocols supported by server: #{protocols}"
+          DRAFT if protocols.include? DRAFT
+        end
 
-                    sock = OpenSSL::SSL::SSLSocket.new(tcp, ctx)
-                    sock.sync_close = true
-                    sock.hostname = server_uri.hostname
-                    sock.connect
+        sock = OpenSSL::SSL::SSLSocket.new(tcp, ctx)
+        sock.sync_close = true
+        sock.hostname = server_uri.hostname
+        sock.connect
 
-                    raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
+        raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
 
-                    sock
-                  else
-                    tcp
-                  end
-                end
+        sock
+      else
+        tcp
+      end
+    end
   end
 
   def get_request

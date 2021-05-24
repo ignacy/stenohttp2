@@ -19,7 +19,7 @@ class PingHandler
   end
 
   def handle(payload)
-    if payload == Server::SERVER_IDENTIFIER || payload == Client::CLIENT_IDENTIFIER
+    if [Server::SERVER_IDENTIFIER, Client::CLIENT_IDENTIFIER].include?(payload)
       @reciving = true
       @current_file = new_message_file
     elsif @reciving
@@ -27,10 +27,10 @@ class PingHandler
         # First ping has the message count
         @messages_left = payload.to_s.split('u').first.to_i
         @count_processed = true
-      elsif @messages_left > 0
+      elsif @messages_left.positive?
         @current_file.write(payload)
         @messages_left -= 1
-      elsif @messages_left == 0
+      elsif @messages_left.zero?
         @current_file.close
         @current_file = nil
         @reciving = false
@@ -47,9 +47,7 @@ class PingHandler
     @send_response
   end
 
-  def send_response=(val)
-    @send_response = val
-  end
+  attr_writer :send_response
 
   private
 

@@ -3,7 +3,6 @@ class StreamHandler
     @stream = stream
   end
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def setup
     log = Stenohttp2::Logger.new(stream.id)
@@ -29,7 +28,6 @@ class StreamHandler
       stream.data(response.content[5...-1])
     end
   end
-  # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
   private

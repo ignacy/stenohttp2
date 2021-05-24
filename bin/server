@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require_relative "../lib/server/server.rb"
+require 'bundler/setup'
+require_relative '../lib/server/server'
 
 Server.new.start

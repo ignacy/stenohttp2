@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require_relative "../lib/watcher"
+require 'bundler/setup'
+require_relative '../lib/watcher'
 
 Watcher.new('tmp/server').start

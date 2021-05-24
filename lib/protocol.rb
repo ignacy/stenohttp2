@@ -8,8 +8,8 @@ require 'sorbet-runtime'
 class Protocol
   extend T::Sig
 
-  DEFAULT_SALT = "\xCA|k\xC3Qw(\xB1E\xF3<\xA7\xCC\x96$\x8A" # OpenSSL::Random.random_bytes(16)
-  DEFAULT_PASSWORD = 'this is a secret'
+  DEFAULT_SALT = "\xCA|k\xC3Qw(\xB1E\xF3<\xA7\xCC\x96$\x8A".freeze # OpenSSL::Random.random_bytes(16)
+  DEFAULT_PASSWORD = 'this is a secret'.freeze
 
   sig { params(text: String).returns(String) }
   def encode(text)
@@ -24,8 +24,6 @@ class Protocol
   def decompress_and_decode(message)
     decode(message.join.strip)
   end
-
-  private
 
   class Encrypter
     extend T::Sig
