@@ -1,4 +1,4 @@
-https://github.com/ignacy/stenohttp2/actions/workflows/rspec.yml/badge.svg
+![specs](https://github.com/ignacy/stenohttp2/actions/workflows/rspec.yml/badge.svg)
 
 
 # Steganography in HTTP/2
