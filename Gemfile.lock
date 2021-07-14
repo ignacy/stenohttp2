@@ -83,17 +83,6 @@ GEM
       thor (~> 1.0)
       tilt (~> 2.0)
       yard (~> 0.9, >= 0.9.24)
-    sorbet (0.5.6424)
-      sorbet-static (= 0.5.6424)
-    sorbet-runtime (0.5.6424)
-    sorbet-static (0.5.6424-universal-darwin-14)
-    sorbet-static (0.5.6424-universal-darwin-15)
-    sorbet-static (0.5.6424-universal-darwin-16)
-    sorbet-static (0.5.6424-universal-darwin-17)
-    sorbet-static (0.5.6424-universal-darwin-18)
-    sorbet-static (0.5.6424-universal-darwin-19)
-    sorbet-static (0.5.6424-universal-darwin-20)
-    sorbet-static (0.5.6424-x86_64-linux)
     thor (1.1.0)
     tilt (2.0.10)
     unicode-display_width (2.0.0)
@@ -113,8 +102,6 @@ DEPENDENCIES
   rubocop
   rubocop-rspec
   solargraph
-  sorbet
-  sorbet-runtime
   yard
   zeitwerk
 

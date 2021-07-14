@@ -1,5 +1,3 @@
-# typed: true
-
 require 'fileutils'
 
 module Stenohttp2

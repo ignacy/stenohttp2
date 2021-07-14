@@ -1,16 +1,9 @@
 # frozen_string_literal: true
 
-# typed: true
-
-require 'sorbet-runtime'
-
 module Stenohttp2
   module Server
     # Server factory creates a HTTP2 ready TCP server and sets up SSL keys
     class ServerFactory
-      extend T::Sig
-
-      sig { params(port: Integer).void }
       def initialize(port)
         @tcp_server = TCPServer.new(port)
       end

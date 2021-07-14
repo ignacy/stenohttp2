@@ -1,22 +1,9 @@
-# typed: true
-
 require 'securerandom'
-require 'sorbet-runtime'
 
 module Stenohttp2
   module Common
     class Sender
-      extend T::Sig
-
-      sig do
-        params(
-          message: Message,
-          connection: T.any(HTTP2::Server, HTTP2::Client),
-          identifier: String,
-          delay: Float
-        ).void
-      end
-      def initialize(message:, connection:, identifier:, delay: 0)
+     def initialize(message:, connection:, identifier:, delay: 0)
         @message = message
         @connection = connection
         @identifier = identifier

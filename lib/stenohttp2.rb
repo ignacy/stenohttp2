@@ -1,5 +1,3 @@
-# typed: strong
-
 require 'dotenv'
 Dotenv.load
 

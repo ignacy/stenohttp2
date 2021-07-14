@@ -2,4 +2,13 @@
 #   srb rbi todo
 
 # typed: strong
+module Rake::TaskLib; end
+module Ripper::SexpBuilder; end
+module Stenohttp2::Client::CLIENT_IDENTIFIER; end
+module Stenohttp2::Client::Client::Message; end
+module Stenohttp2::Client::Client::PingHandler; end
+module Stenohttp2::Client::Client::Sender; end
+module Stenohttp2::Logger; end
+module Stenohttp2::Server::ConnectionHandler::Message; end
+module Stenohttp2::Server::ConnectionHandler::Sender; end
 module T::CompatibilityPatches::RecorderExtensions; end

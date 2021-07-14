@@ -9,8 +9,6 @@ gem 'rspec', group: :development
 gem 'rubocop', group: :development
 gem 'rubocop-rspec', group: :development
 gem 'solargraph', group: :development
-gem 'sorbet', group: :development
-gem 'sorbet-runtime'
 gem 'yard'
 gem 'zeitwerk'
 

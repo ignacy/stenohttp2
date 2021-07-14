@@ -1,5 +1,3 @@
-# typed: true
-
 require 'forwardable'
 
 module Stenohttp2
@@ -7,10 +5,8 @@ module Stenohttp2
     class ConnectionHandler
       SERVER_PING_DELAY = 0.05
       extend Forwardable
-      extend T::Sig
       def_delegators :@connection, :receive
 
-      sig { params(socket: String).void }
       def initialize(socket)
         @socket = socket
         @connection = HTTP2::Server.new

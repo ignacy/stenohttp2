@@ -1,21 +1,15 @@
-# typed: true
 require 'openssl'
 require 'base64'
 require 'cgi'
 
-require 'sorbet-runtime'
-
 module Stenohttp2
   module Common
     class Protocol
-      extend T::Sig
 
-      sig { params(text: String).returns(String) }
       def encode(text)
         Encrypter.new.call(text)
       end
 
-      sig { params(text: String).returns(String) }
       def decode(text)
         Decrypter.new.call(text)
       end
@@ -25,8 +19,6 @@ module Stenohttp2
       end
 
       class Encrypter
-        extend T::Sig
-
         def call(text)
           encrypted = cipher.update(text) + cipher.final
           CGI.escape(Base64.strict_encode64(encrypted))
@@ -46,8 +38,6 @@ module Stenohttp2
       end
 
       class Decrypter
-        extend T::Sig
-
         def call(text)
           data = Base64.strict_decode64(CGI.unescape(text))
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# typed: true
-
 require 'securerandom'
 
 # rubocop:disable Metrics/ClassLength
@@ -58,7 +56,7 @@ module Stenohttp2
             conn << data
           rescue StandardError => e
             log.info "#{e.class} exception: #{e.message} - closing socket."
-            T.must(e.backtrace).each { |l| puts "\t#{l}" }
+            e.backtrace.each { |l| puts "\t#{l}" }
             socket.close
           end
         end

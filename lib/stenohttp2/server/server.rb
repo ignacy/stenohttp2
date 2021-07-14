@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# typed: true
 require 'securerandom'
 
 module Stenohttp2
@@ -29,7 +28,7 @@ module Stenohttp2
               connection_handler.receive(data)
             rescue StandardError => e
               puts "#{e.class} exception: #{e.message} - closing socket."
-              T.must(e.backtrace).each { |l| puts "\t#{l}" }
+              e.backtrace.each { |l| puts "\t#{l}" }
               sock.close
             end
           end
