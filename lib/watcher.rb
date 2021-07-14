@@ -6,8 +6,7 @@ require_relative 'protocol'
 
 class Watcher
   def initialize(dir)
-    @dir = dir
-    @path = "/Users/ignacy/code/stenohttp2/#{@dir}"
+    @path = File.expand_path(dir)
   end
 
   def start
