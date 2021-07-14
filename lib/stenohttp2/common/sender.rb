@@ -3,7 +3,7 @@ require 'securerandom'
 module Stenohttp2
   module Common
     class Sender
-     def initialize(message:, connection:, identifier:, delay: 0)
+      def initialize(message:, connection:, identifier:, delay: 0)
         @message = message
         @connection = connection
         @identifier = identifier

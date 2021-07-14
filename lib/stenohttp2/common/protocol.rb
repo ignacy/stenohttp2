@@ -5,7 +5,6 @@ require 'cgi'
 module Stenohttp2
   module Common
     class Protocol
-
       def encode(text)
         Encrypter.new.call(text)
       end
