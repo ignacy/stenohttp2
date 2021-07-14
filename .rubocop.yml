@@ -6,4 +6,8 @@ Style/Documentation:
 
 Metrics/MethodLength:
   Enabled: true
-  Max: 20 # Lots of long block methods
+  Max: 25 # Lots of long block methods
+
+Metrics/AbcSize:
+  Enabled: true
+  Max: 20

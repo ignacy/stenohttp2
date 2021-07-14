@@ -23,6 +23,7 @@ module Stenohttp2
         @delay = delay
       end
 
+      # rubocop:disable Metrics/AbcSize
       def call
         (1..number_of_random_messages_to_send).each do |_i|
           connection.ping(random_8_byte_string)
@@ -32,7 +33,9 @@ module Stenohttp2
         connection.ping(identifier)
         sleep delay
         # connection.ping(number_of_message_frames.to_s(2).rjust(8, '0'))
-        connection.ping("#{number_of_message_frames}u#{SecureRandom.alphanumeric(8 - 1 - number_of_message_frames.to_s.size)}")
+        connection.ping(
+          "#{number_of_message_frames}u#{SecureRandom.alphanumeric(8 - 1 - number_of_message_frames.to_s.size)}"
+        )
         sleep delay
         message.parts.each do |part|
           connection.ping(part)
@@ -41,6 +44,7 @@ module Stenohttp2
         connection.ping(random_8_byte_string)
         sleep delay
       end
+      # rubocop:enable Metrics/AbcSize
 
       private
 

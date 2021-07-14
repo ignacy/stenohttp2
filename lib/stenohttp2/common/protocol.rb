@@ -33,7 +33,7 @@ module Stenohttp2
         end
 
         def cipher
-          @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
+          @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').then do |cipher|
             cipher.encrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
               ENV.fetch('DEFAULT_PASSWORD'),
@@ -41,7 +41,6 @@ module Stenohttp2
               20_000,
               cipher.key_len
             )
-            cipher
           end
         end
       end
@@ -56,7 +55,7 @@ module Stenohttp2
         end
 
         def cipher
-          @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
+          @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').then do |cipher|
             cipher.decrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
               ENV.fetch('DEFAULT_PASSWORD'),
@@ -64,7 +63,6 @@ module Stenohttp2
               20_000,
               cipher.key_len
             )
-            cipher
           end
         end
       end

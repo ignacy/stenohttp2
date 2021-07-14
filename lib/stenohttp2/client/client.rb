@@ -101,6 +101,7 @@ module Stenohttp2
         @ping_handler ||= PingHandler.new(server: false)
       end
 
+      # rubocop:disable Metrics/AbcSize
       def socket
         @socket ||= begin
           tcp = TCPSocket.new(server_uri.host, server_uri.port)
@@ -127,7 +128,9 @@ module Stenohttp2
           end
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
+      # rubocop:disable Naming/AccessorMethodName
       def get_request
         @get_request ||= {
           ':scheme' => server_uri.scheme,
@@ -137,6 +140,7 @@ module Stenohttp2
           'accept' => '*/*'
         }
       end
+      # rubocop:enable Naming/AccessorMethodName
 
       def post_request
         @post_request ||= {

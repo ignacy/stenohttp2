@@ -15,6 +15,7 @@ module Stenohttp2
         @connection = HTTP2::Server.new
       end
 
+      # rubocop:disable Metrics/AbcSize
       def setup
         connection.tap do |connection|
           connection.on(:frame) do |bytes|
@@ -33,6 +34,7 @@ module Stenohttp2
           connection.on(:stream) { |s| StreamHandler.new(s).setup }
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       private
 
