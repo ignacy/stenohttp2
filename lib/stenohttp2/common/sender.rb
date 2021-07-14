@@ -1,9 +1,10 @@
 # typed: true
 
 require 'securerandom'
-require_relative './message'
 require 'sorbet-runtime'
 
+module Stenohttp2
+  module Common
 class Sender
   extend T::Sig
 
@@ -56,4 +57,6 @@ class Sender
   end
 
   attr_reader :message, :identifier, :delay, :connection
+end
+  end
 end

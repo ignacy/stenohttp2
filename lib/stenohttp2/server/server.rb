@@ -2,10 +2,9 @@
 
 # typed: true
 require 'securerandom'
-require_relative './server_factory'
-require_relative './connection_handler'
-require_relative '../helper'
 
+module Stenohttp2
+  module Server
 class Server
   SERVER_IDENTIFIER = 'r2ssbxv8'
 
@@ -43,4 +42,6 @@ class Server
   private
 
   attr_reader :server, :port
+end
+  end
 end

@@ -1,10 +1,10 @@
 # typed: true
 
 require 'listen'
-require_relative 'message'
-require_relative 'protocol'
 
-class Watcher
+module Stenohttp2
+  module Common
+    class Watcher
   def initialize(dir)
     @path = File.expand_path(dir)
   end
@@ -31,4 +31,6 @@ class Watcher
   rescue StandardError => e
     puts "Could not read the data #{e} [Message incomplete?]"
   end
+end
+end
 end

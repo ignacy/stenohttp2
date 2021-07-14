@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # typed: true
-$LOAD_PATH << 'lib' << '../lib'
 
 require 'optparse'
 require 'socket'
@@ -12,6 +11,7 @@ require 'uri'
 DRAFT = 'h2'
 
 module Stenohttp2
+  module Common
   class Logger
     def initialize(id)
       @id = id
@@ -20,5 +20,6 @@ module Stenohttp2
     def info(msg)
       puts "[Stream #{@id}]: #{msg}"
     end
+  end
   end
 end

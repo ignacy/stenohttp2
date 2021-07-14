@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-RSpec.describe Protocol do
+RSpec.describe Stenohttp2::Common::Protocol do
   subject { described_class.new }
 
   it 'encodes the message' do

@@ -1,6 +1,7 @@
 # typed: true
 
-require_relative 'protocol'
+module Stenohttp2
+  module Common
 
 class Message
   SIZE = 8
@@ -18,4 +19,6 @@ class Message
   end
 
   attr_reader :encoded
+end
+  end
 end

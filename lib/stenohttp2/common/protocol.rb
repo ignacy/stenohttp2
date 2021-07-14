@@ -5,6 +5,8 @@ require 'cgi'
 
 require 'sorbet-runtime'
 
+module Stenohttp2
+  module Common
 class Protocol
   extend T::Sig
 
@@ -68,5 +70,7 @@ class Protocol
         cipher
       end
     end
+  end
+end
   end
 end

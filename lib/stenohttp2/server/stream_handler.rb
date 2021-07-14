@@ -1,3 +1,5 @@
+module Stenohttp2
+  module Server
 class StreamHandler
   def initialize(stream)
     @stream = stream
@@ -58,4 +60,6 @@ class StreamHandler
   end
 
   attr_reader :stream
+end
+  end
 end

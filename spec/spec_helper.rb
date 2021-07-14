@@ -1,8 +1,6 @@
 # typed: strict
 require 'bundler/setup'
 require 'stenohttp2'
-require_relative '../lib/message'
-require_relative '../lib/protocol'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

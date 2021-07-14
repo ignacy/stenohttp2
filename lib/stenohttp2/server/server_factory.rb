@@ -3,8 +3,9 @@
 # typed: true
 
 require 'sorbet-runtime'
-require_relative '../helper'
 
+module Stenohttp2
+  module Server
 # Server factory creates HTTP2 ready TCP server and sets up SSL keys
 class ServerFactory
   extend T::Sig
@@ -37,4 +38,6 @@ class ServerFactory
     end
   end
   attr_reader :tcp_server
+end
+  end
 end

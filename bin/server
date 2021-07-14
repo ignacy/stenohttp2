@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require_relative '../lib/server/server'
+require_relative '../lib/stenohttp2'
 
-Server.new.start
+Stenohttp2::Server::Server.new.start
