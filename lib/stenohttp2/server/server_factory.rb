@@ -6,7 +6,7 @@ require 'sorbet-runtime'
 
 module Stenohttp2
   module Server
-    # Server factory creates HTTP2 ready TCP server and sets up SSL keys
+    # Server factory creates a HTTP2 ready TCP server and sets up SSL keys
     class ServerFactory
       extend T::Sig
 

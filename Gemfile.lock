@@ -115,6 +115,7 @@ DEPENDENCIES
   solargraph
   sorbet
   sorbet-runtime
+  yard
   zeitwerk
 
 BUNDLED WITH

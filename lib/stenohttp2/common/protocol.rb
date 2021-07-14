@@ -10,8 +10,6 @@ module Stenohttp2
     class Protocol
       extend T::Sig
 
-      DEFAULT_PASSWORD = 'this is a secret'.freeze
-
       sig { params(text: String).returns(String) }
       def encode(text)
         Encrypter.new.call(text)
@@ -38,7 +36,7 @@ module Stenohttp2
           @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
             cipher.encrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
-              Protocol::DEFAULT_PASSWORD,
+              ENV.fetch('DEFAULT_PASSWORD'),
               ENV.fetch('DEFAULT_SALT'),
               20_000,
               cipher.key_len
@@ -61,7 +59,7 @@ module Stenohttp2
           @cipher ||= OpenSSL::Cipher.new('AES-256-CFB').tap do |cipher|
             cipher.decrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
-              Protocol::DEFAULT_PASSWORD,
+              ENV.fetch('DEFAULT_PASSWORD'),
               ENV.fetch('DEFAULT_SALT'),
               20_000,
               cipher.key_len
