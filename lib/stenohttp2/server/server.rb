@@ -6,8 +6,6 @@ require 'securerandom'
 module Stenohttp2
   module Server
     class Server
-      SERVER_IDENTIFIER = 'r2ssbxv8'
-
       def initialize(opts = {})
         @port = opts.fetch(:port, 8080)
         @server = ServerFactory.new(@port).start

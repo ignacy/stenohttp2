@@ -19,7 +19,7 @@ module Stenohttp2
       end
 
       def handle(payload)
-        if [Server::SERVER_IDENTIFIER, Client::CLIENT_IDENTIFIER].include?(payload)
+        if [ENV.fetch('SERVER_IDENTIFIER'), Client::CLIENT_IDENTIFIER].include?(payload)
           @reciving = true
           @current_file = new_message_file
         elsif @reciving

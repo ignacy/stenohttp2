@@ -7,9 +7,10 @@ module Stenohttp2
     class ConnectionHandler
       SERVER_PING_DELAY = 0.05
       extend Forwardable
-
+      extend T::Sig
       def_delegators :@connection, :receive
 
+      sig { params(socket: String).void }
       def initialize(socket)
         @socket = socket
         @connection = HTTP2::Server.new
@@ -50,7 +51,7 @@ module Stenohttp2
         Sender.new(
           message: response_message,
           connection: connection,
-          identifier: Server::SERVER_IDENTIFIER,
+          identifier: ENV.fetch('SERVER_IDENTIFIER'),
           delay: SERVER_PING_DELAY
         )
       end
