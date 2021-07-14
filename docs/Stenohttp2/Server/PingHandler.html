@@ -417,7 +417,7 @@
       <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_handle'>handle</span><span class='lparen'>(</span><span class='id identifier rubyid_payload'>payload</span><span class='rparen'>)</span>
-  <span class='kw'>if</span> <span class='lbracket'>[</span><span class='const'><span class='object_link'><a href="Server.html" title="Stenohttp2::Server::Server (class)">Server</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Server.html#SERVER_IDENTIFIER-constant" title="Stenohttp2::Server::Server::SERVER_IDENTIFIER (constant)">SERVER_IDENTIFIER</a></span></span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="../Client.html" title="Stenohttp2::Client (module)">Client</a></span></span><span class='op'>::</span><span class='const'>CLIENT_IDENTIFIER</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_payload'>payload</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='lbracket'>[</span><span class='const'>ENV</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SERVER_IDENTIFIER</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="../Client.html" title="Stenohttp2::Client (module)">Client</a></span></span><span class='op'>::</span><span class='const'>CLIENT_IDENTIFIER</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_payload'>payload</span><span class='rparen'>)</span>
     <span class='ivar'>@reciving</span> <span class='op'>=</span> <span class='kw'>true</span>
     <span class='ivar'>@current_file</span> <span class='op'>=</span> <span class='id identifier rubyid_new_message_file'>new_message_file</span>
   <span class='kw'>elsif</span> <span class='ivar'>@reciving</span>
@@ -502,7 +502,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 14 11:11:28 2021 by
+  Generated on Wed Jul 14 18:39:13 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>

@@ -87,7 +87,7 @@
   
   <dl>
       <dt>Extended by:</dt>
-      <dd>Forwardable</dd>
+      <dd>Forwardable, T::Sig</dd>
   </dl>
   
   
@@ -178,7 +178,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>rubocop:disable Metrics/AbcSize.</p>
+</div></span>
   
 </li>
 
@@ -187,6 +189,7 @@
   
 
 
+  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -216,13 +219,13 @@
       <pre class="lines">
 
 
-13
 14
 15
-16</pre>
+16
+17</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_socket'>socket</span><span class='rparen'>)</span>
   <span class='ivar'>@socket</span> <span class='op'>=</span> <span class='id identifier rubyid_socket'>socket</span>
@@ -249,14 +252,23 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>rubocop:disable Metrics/AbcSize</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-18
-19
 20
 21
 22
@@ -272,10 +284,12 @@
 32
 33
 34
-35</pre>
+35
+36
+37</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_setup'>setup</span>
   <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_connection'>connection</span><span class='op'>|</span>
@@ -305,7 +319,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 14 11:11:28 2021 by
+  Generated on Wed Jul 14 18:39:13 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>
