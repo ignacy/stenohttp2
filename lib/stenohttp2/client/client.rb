@@ -103,29 +103,29 @@ module Stenohttp2
 
       def socket
         @socket ||= begin
-                      tcp = TCPSocket.new(server_uri.host, server_uri.port)
+          tcp = TCPSocket.new(server_uri.host, server_uri.port)
 
-                      if server_uri.scheme == 'https'
-                        ctx = OpenSSL::SSL::SSLContext.new
-                        ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
-                        ctx.alpn_protocols = [DRAFT]
-                        ctx.alpn_select_cb = lambda do |protocols|
-                          log.warn "ALPN protocols supported by server: #{protocols}"
-                          DRAFT if protocols.include? DRAFT
-                        end
+          if server_uri.scheme == 'https'
+            ctx = OpenSSL::SSL::SSLContext.new
+            ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
+            ctx.alpn_protocols = [DRAFT]
+            ctx.alpn_select_cb = lambda do |protocols|
+              log.warn "ALPN protocols supported by server: #{protocols}"
+              DRAFT if protocols.include? DRAFT
+            end
 
-                        sock = OpenSSL::SSL::SSLSocket.new(tcp, ctx)
-                        sock.sync_close = true
-                        sock.hostname = server_uri.hostname
-                        sock.connect
+            sock = OpenSSL::SSL::SSLSocket.new(tcp, ctx)
+            sock.sync_close = true
+            sock.hostname = server_uri.hostname
+            sock.connect
 
-                        raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
+            raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
 
-                        sock
-                      else
-                        tcp
-                      end
-                    end
+            sock
+          else
+            tcp
+          end
+        end
       end
 
       def get_request

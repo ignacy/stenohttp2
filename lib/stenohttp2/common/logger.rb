@@ -12,14 +12,14 @@ DRAFT = 'h2'
 
 module Stenohttp2
   module Common
-  class Logger
-    def initialize(id)
-      @id = id
-    end
+    class Logger
+      def initialize(id)
+        @id = id
+      end
 
-    def info(msg)
-      puts "[Stream #{@id}]: #{msg}"
+      def info(msg)
+        puts "[Stream #{@id}]: #{msg}"
+      end
     end
-  end
   end
 end
