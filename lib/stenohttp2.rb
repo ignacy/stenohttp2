@@ -1,5 +1,8 @@
 # typed: strong
 
+require 'dotenv'
+Dotenv.load
+
 require 'zeitwerk'
 loader = Zeitwerk::Loader.for_gem
 loader.setup

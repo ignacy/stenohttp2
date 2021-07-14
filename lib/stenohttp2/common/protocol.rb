@@ -10,7 +10,6 @@ module Stenohttp2
     class Protocol
       extend T::Sig
 
-      DEFAULT_SALT = "\xCA|k\xC3Qw(\xB1E\xF3<\xA7\xCC\x96$\x8A".freeze # OpenSSL::Random.random_bytes(16)
       DEFAULT_PASSWORD = 'this is a secret'.freeze
 
       sig { params(text: String).returns(String) }
@@ -40,7 +39,7 @@ module Stenohttp2
             cipher.encrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
               Protocol::DEFAULT_PASSWORD,
-              Protocol::DEFAULT_SALT,
+              ENV.fetch('DEFAULT_SALT'),
               20_000,
               cipher.key_len
             )
@@ -63,7 +62,7 @@ module Stenohttp2
             cipher.decrypt
             cipher.key = OpenSSL::PKCS5.pbkdf2_hmac_sha1(
               Protocol::DEFAULT_PASSWORD,
-              Protocol::DEFAULT_SALT,
+              ENV.fetch('DEFAULT_SALT'),
               20_000,
               cipher.key_len
             )
