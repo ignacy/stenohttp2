@@ -4,6 +4,10 @@ module Stenohttp2
   module Server
     class PingHandler
       TIMESTAMP_FORMAT = '%Y-%m-%d-%H-%M'.freeze
+      IDENTIFIERS = [
+        ENV.fetch('SERVER_IDENTIFIER'),
+        ::Stenohttp2::Client::Client::CLIENT_IDENTIFIER
+      ].freeze
 
       def initialize(server: true)
         @server = server
@@ -15,7 +19,7 @@ module Stenohttp2
       end
 
       def handle(payload)
-        if [ENV.fetch('SERVER_IDENTIFIER'), ::Stenohttp2::Client::Client::CLIENT_IDENTIFIER].include?(payload)
+        if IDENTIFIERS.include?(payload)
           @reciving = true
           @current_file = new_message_file
         elsif @reciving
