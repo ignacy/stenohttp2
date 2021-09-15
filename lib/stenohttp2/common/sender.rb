@@ -1,7 +1,8 @@
-# typed: true
+# typed: ignore
 
 require 'securerandom'
 require 'sorbet-runtime'
+require 'http/2'
 
 module Stenohttp2
   module Common

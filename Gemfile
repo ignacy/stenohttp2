@@ -12,5 +12,6 @@ gem 'rubocop-rspec', group: :development
 gem 'solargraph', group: :development
 gem 'sorbet', group: :development
 gem 'sorbet-runtime'
+gem 'tapioca'
 gem 'yard'
 gem 'zeitwerk'

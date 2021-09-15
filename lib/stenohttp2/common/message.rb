@@ -1,4 +1,4 @@
-# typed: true
+# typed: false
 
 require_relative 'protocol'
 require 'sorbet-runtime'

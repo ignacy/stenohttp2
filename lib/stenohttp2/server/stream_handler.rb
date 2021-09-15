@@ -1,3 +1,4 @@
+# typed: ignore
 module Stenohttp2
   module Server
     class StreamHandler
