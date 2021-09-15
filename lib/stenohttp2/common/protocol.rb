@@ -3,6 +3,9 @@ require 'openssl'
 require 'base64'
 require 'cgi'
 require 'sorbet-runtime'
+
+require_relative './cipher_builder'
+
 module Stenohttp2
   module Common
     class Protocol
@@ -33,7 +36,7 @@ module Stenohttp2
         end
 
         def cipher
-          @cipher ||= CipherBuilder.encryptor
+          @cipher ||= ::Stenohttp2::Common::CipherBuilder.encryptor
         end
       end
 
@@ -48,7 +51,7 @@ module Stenohttp2
         end
 
         def cipher
-          @cipher ||= CipherBuilder.decryptor
+          @cipher ||= ::Stenohttp2::Common::CipherBuilder.decryptor
         end
       end
     end

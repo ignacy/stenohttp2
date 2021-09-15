@@ -8,7 +8,7 @@ module Stenohttp2
 
       # rubocop:disable Metrics/AbcSize
       def setup
-        log = Stenohttp2::Logger.new(stream.id)
+        log = Stenohttp2::Common::Logger.new(stream.id)
         req = T.let({}, T.untyped)
         buffer = ''
 

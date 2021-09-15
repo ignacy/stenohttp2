@@ -1,8 +1,8 @@
-# typed: ignore
+# typed: false
 
+require 'http/2'
 require 'securerandom'
 require 'sorbet-runtime'
-require 'http/2'
 
 module Stenohttp2
   module Common
@@ -12,7 +12,7 @@ module Stenohttp2
       sig do
         params(
           message: Message,
-          connection: T.any(HTTP2::Server, HTTP2::Client),
+          connection: T.any(HTTP2::Client, HTTP2::Server),
           identifier: String,
           delay: T.any(Float, Integer)
         ).void

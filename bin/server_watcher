@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require_relative '../lib/watcher'
+require_relative '../lib/stenohttp2'
+require 'fileutils'
 
-Watcher.new('tmp/server').start
+SERVER_DIR = 'tmp/server'.freeze
+
+FileUtils.mkdir_p SERVER_DIR
+Stenohttp2::Common::Watcher.new(SERVER_DIR).start

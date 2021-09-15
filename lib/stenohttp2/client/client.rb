@@ -32,8 +32,8 @@ module Stenohttp2
 
         Thread.kill(pinger)
 
-        Sender.new(
-          message: Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
+        ::Stenohttp2::Common::Sender.new(
+          message: ::Stenohttp2::Common::Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
           connection: conn,
           identifier: CLIENT_IDENTIFIER,
           delay: CLIENT_PING_DELAY
@@ -98,7 +98,7 @@ module Stenohttp2
       end
 
       def ping_handler
-        @ping_handler ||= PingHandler.new(server: false)
+        @ping_handler ||= ::Stenohttp2::Server::PingHandler.new(server: false)
       end
 
       # rubocop:disable Metrics/AbcSize
@@ -153,7 +153,7 @@ module Stenohttp2
       end
 
       def conn
-        @conn ||= HTTP2::Client.new
+        @conn ||= ::HTTP2::Client.new
       end
 
       def stream
@@ -161,7 +161,7 @@ module Stenohttp2
       end
 
       def log
-        @log ||= Stenohttp2::Logger.new(stream.id)
+        @log ||= ::Stenohttp2::Common::Logger.new(stream.id)
       end
     end
   end

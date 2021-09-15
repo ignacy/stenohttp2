@@ -1,5 +1,6 @@
 # typed: ignore
 require 'forwardable'
+require 'http/2'
 
 module Stenohttp2
   module Server
@@ -10,7 +11,7 @@ module Stenohttp2
 
       def initialize(socket)
         @socket = socket
-        @connection = HTTP2::Server.new
+        @connection = ::HTTP2::Server.new
       end
 
       # rubocop:disable Metrics/AbcSize
@@ -29,7 +30,7 @@ module Stenohttp2
             end
           end
 
-          connection.on(:stream) { |s| StreamHandler.new(s).setup }
+          connection.on(:stream) { |s|::Stenohttp2::Server::StreamHandler.new(s).setup }
         end
       end
       # rubocop:enable Metrics/AbcSize
@@ -40,12 +41,12 @@ module Stenohttp2
         @ping_handler ||= PingHandler.new(server: true)
       end
 
-      def response
-        Message.new('message received.')
+      def response_message
+        ::Stenohttp2::Common::Message.new('message received.')
       end
 
       def sender(connection)
-        Sender.new(
+        ::Stenohttp2::Common::Sender.new(
           message: response_message,
           connection: connection,
           identifier: ENV.fetch('SERVER_IDENTIFIER'),

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'bundler/setup'
-require_relative '../lib/client/client'
+require_relative '../lib/stenohttp2'
 
-Client.new.start
+::Stenohttp2::Client::Client.new.start
