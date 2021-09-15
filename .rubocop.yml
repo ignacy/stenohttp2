@@ -10,4 +10,4 @@ Metrics/MethodLength:
 
 Metrics/AbcSize:
   Enabled: true
-  Max: 20
+  Max: 25

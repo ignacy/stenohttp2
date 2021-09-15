@@ -14,7 +14,7 @@ module Stenohttp2
         @encoded = protocol.new.encode(content)
       end
 
-      sig { returns(String) }
+      sig { returns(Array) }
       def parts
         compress(encoded)
       end

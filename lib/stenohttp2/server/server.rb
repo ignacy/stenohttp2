@@ -11,7 +11,6 @@ module Stenohttp2
         @server = ServerFactory.new(@port).start
       end
 
-      # rubocop:disable Metrics/AbcSize
       def start
         puts "Server listening on https://localhost:#{port}"
         loop do
@@ -35,7 +34,6 @@ module Stenohttp2
           end
         end
       end
-      # rubocop:enable Metrics/AbcSize
 
       private
 

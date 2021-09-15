@@ -15,7 +15,7 @@ module Stenohttp2
 
       private
 
-      # rubocop:disable Naming/VariableNumber, Metrics/AbcSize
+      # rubocop:disable Naming/VariableNumber
       def ctx
         OpenSSL::SSL::SSLContext.new.tap do |ctx|
           ctx.cert = OpenSSL::X509::Certificate.new(File.open('keys/server.crt'))
@@ -32,7 +32,7 @@ module Stenohttp2
           ctx.ecdh_curves = 'P-256'
         end
       end
-      # rubocop:enable Naming/VariableNumber, Metrics/AbcSize
+      # rubocop:enable Naming/VariableNumber
 
       attr_reader :tcp_server
     end
