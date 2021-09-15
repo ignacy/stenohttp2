@@ -1,4 +1,4 @@
-# typed: false
+# typed: true
 
 require_relative 'protocol'
 require 'sorbet-runtime'
@@ -7,10 +7,10 @@ module Stenohttp2
   module Common
     class Message
       extend T::Sig
-      SLICE_SIZE = 8
+      SLICE_SIZE = 8 # Messages are split into chunks of length 8
 
-      sig { params(content: String, protocol: Protocol).void }
-      def initialize(content, protocol = Protocol)
+      sig { params(content: String, protocol: T.class_of(Stenohttp2::Common::Protocol)).void }
+      def initialize(content, protocol = Stenohttp2::Common::Protocol)
         @encoded = protocol.new.encode(content)
       end
 
@@ -19,6 +19,7 @@ module Stenohttp2
         compress(encoded)
       end
 
+      sig { params(text: String).returns(Array) }
       def compress(text)
         text.chars.each_slice(SLICE_SIZE).to_a.map(&:join).map { |r| r.ljust(SLICE_SIZE) }
       end
