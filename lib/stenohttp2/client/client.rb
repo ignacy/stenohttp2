@@ -12,7 +12,7 @@ module Stenohttp2
       CLIENT_IDENTIFIER = 'ccxin6f5'
 
       def initialize(opts = {})
-        @server_address = opts.fetch(:server_url, 'https://localhost:8080')
+        @server_address = opts.fetch(:server_url)
         @data = 'MY random string'
       end
 

@@ -1,18 +1,24 @@
-# typed: ignore
+# typed: true
 # frozen_string_literal: true
 
 require 'securerandom'
+require 'uri'
+require 'sorbet-runtime'
 
 module Stenohttp2
   module Server
     class Server
-      def initialize(opts = {})
-        @port = opts.fetch(:port, 8080)
+      extend T::Sig
+
+      sig { params(url: URI).void }
+      def initialize(url:)
+        @url = opts.fetch(:url)
+        @port = URI(@url).port
         @server = ServerFactory.new(@port).start
       end
 
       def start
-        puts "Server listening on https://localhost:#{port}"
+        puts "Server listening on #{url}"
         loop do
           sock = server.accept
           connection_handler = ConnectionHandler.new(sock).setup
@@ -37,7 +43,7 @@ module Stenohttp2
 
       private
 
-      attr_reader :server, :port
+      attr_reader :server, :port, :url
     end
   end
 end
