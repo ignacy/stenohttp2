@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'securerandom'
-require 'http2'
+require 'http/2'
 
 # rubocop:disable Metrics/ClassLength
 module Stenohttp2
