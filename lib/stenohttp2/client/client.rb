@@ -13,7 +13,6 @@ module Stenohttp2
 
       def initialize(opts = {})
         @server_address = opts.fetch(:server_url)
-        @data = 'MY random string'
       end
 
       # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -49,7 +48,7 @@ module Stenohttp2
         end
 
         stream.headers(post_request, end_stream: false) # POST data
-        stream.data(@data)
+        stream.data(SecureRangom.hex(20)) # Post some random data to the server
 
         Thread.kill(pinger)
         while !socket.closed? && !socket.eof?
