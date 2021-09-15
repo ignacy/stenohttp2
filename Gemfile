@@ -10,7 +10,6 @@ gem 'rspec', group: :development
 gem 'rubocop', group: :development
 gem 'rubocop-rspec', group: :development
 gem 'solargraph', group: :development
-gem 'solargraph'
 gem 'sorbet', group: :development
 gem 'sorbet-runtime'
 gem 'tapioca'
