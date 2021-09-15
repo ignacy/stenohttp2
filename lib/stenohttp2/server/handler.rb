@@ -4,7 +4,7 @@ require 'http/2'
 
 module Stenohttp2
   module Server
-    class ConnectionHandler
+    class Handler
       SERVER_PING_DELAY = 0.05
       extend Forwardable
       def_delegators :@connection, :receive

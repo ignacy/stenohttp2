@@ -188,14 +188,14 @@
       <pre class="lines">
 
 
-44
-45
-46
 47
-48</pre>
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/protocol.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/protocol.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='const'>Base64</span><span class='period'>.</span><span class='id identifier rubyid_strict_decode64'>strict_decode64</span><span class='lparen'>(</span><span class='const'>CGI</span><span class='period'>.</span><span class='id identifier rubyid_unescape'>unescape</span><span class='lparen'>(</span><span class='id identifier rubyid_text'>text</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -222,15 +222,15 @@
       <pre class="lines">
 
 
-50
-51
-52</pre>
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/protocol.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/protocol.rb', line 53</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_cipher'>cipher</span>
-  <span class='ivar'>@cipher</span> <span class='op'>||=</span> <span class='const'><span class='object_link'><a href="../CipherBuilder.html" title="Stenohttp2::Common::CipherBuilder (class)">CipherBuilder</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decryptor'><span class='object_link'><a href="../CipherBuilder.html#decryptor-class_method" title="Stenohttp2::Common::CipherBuilder.decryptor (method)">decryptor</a></span></span>
+  <span class='ivar'>@cipher</span> <span class='op'>||=</span> <span class='op'>::</span><span class='const'><span class='object_link'><a href="../../../Stenohttp2.html" title="Stenohttp2 (module)">Stenohttp2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Common.html" title="Stenohttp2::Common (module)">Common</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../CipherBuilder.html" title="Stenohttp2::Common::CipherBuilder (class)">CipherBuilder</a></span></span><span class='period'>.</span><span class='id identifier rubyid_decryptor'><span class='object_link'><a href="../CipherBuilder.html#decryptor-class_method" title="Stenohttp2::Common::CipherBuilder.decryptor (method)">decryptor</a></span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -242,7 +242,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Sep 15 08:41:49 2021 by
+  Generated on Wed Sep 15 11:27:39 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>
