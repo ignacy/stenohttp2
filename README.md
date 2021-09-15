@@ -24,3 +24,27 @@ For my implementation I selected [PING frames](https://datatracker.ietf.org/doc/
 
 This project is using Ruby with [http2 gem](https://github.com/igrigorik/http-2).
 One interesting aspect is that I used Sorbet for typechecking in most of the places.
+
+This is a complete implementation but it should not be used in a production setup: the keys for OpenSSL are part of this repository, a lot of data is hardcoded, so it all should be treated as a proof of concept.
+
+# Usage
+
+This project has server and client components. Each of those in turn has watcher and main processes. The idea is that server could work as usual HTTP server,
+client as regular HTTP client but the watcher processes allow you to view the conversation that is happening behind the scenes.
+
+To see it action (presumably in separate tabs or in the background) you need to run the 4 following processes:
+
+```sh
+bin/client_watcher
+bin/server_watcher
+bin/server
+bin/client
+```
+
+The only important thing is that the client should be run after the server.
+
+
+
+
+
+
