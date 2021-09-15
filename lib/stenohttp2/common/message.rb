@@ -15,7 +15,7 @@ module Stenohttp2
       end
 
       def parts
-        compress encoded
+        compress(encoded)
       end
 
       def compress(text)

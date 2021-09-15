@@ -87,7 +87,7 @@
   
   <dl>
       <dt>Extended by:</dt>
-      <dd>Forwardable, T::Sig</dd>
+      <dd>Forwardable</dd>
   </dl>
   
   
@@ -189,7 +189,6 @@
   
 
 
-  
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
@@ -219,13 +218,13 @@
       <pre class="lines">
 
 
-14
-15
-16
-17</pre>
+11
+12
+13
+14</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_socket'>socket</span><span class='rparen'>)</span>
   <span class='ivar'>@socket</span> <span class='op'>=</span> <span class='id identifier rubyid_socket'>socket</span>
@@ -269,6 +268,9 @@
       <pre class="lines">
 
 
+17
+18
+19
 20
 21
 22
@@ -283,13 +285,10 @@
 31
 32
 33
-34
-35
-36
-37</pre>
+34</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/connection_handler.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_setup'>setup</span>
   <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_connection'>connection</span><span class='op'>|</span>
@@ -319,7 +318,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 14 18:39:13 2021 by
+  Generated on Wed Sep 15 08:41:49 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>

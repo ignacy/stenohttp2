@@ -137,7 +137,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>rubocop:disable Metrics/AbcSize.</p>
+<p>Send the encrypted message over the hidden channel.</p>
 </div></span>
   
 </li>
@@ -202,15 +202,15 @@
       <pre class="lines">
 
 
-19
 20
 21
 22
 23
-24</pre>
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/sender.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/sender.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>message:</span><span class='comma'>,</span> <span class='label'>connection:</span><span class='comma'>,</span> <span class='label'>identifier:</span><span class='comma'>,</span> <span class='label'>delay:</span> <span class='int'>0</span><span class='rparen'>)</span>
   <span class='ivar'>@message</span> <span class='op'>=</span> <span class='id identifier rubyid_message'>message</span>
@@ -242,7 +242,13 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>rubocop:disable Metrics/AbcSize</p>
+<p>Send the encrypted message over the hidden channel.</p>
+
+<p>Calls to `sleep delay` look silly but they are important because otherwise the whole message would be send at once which would be very suspicious.</p>
+
+<p>The calls to `random_8_byte_string` are used to hide the message better. If you look at the whole exchange it looks like this:</p>
+
+<p>e48ea076 &lt;- top padding a0eb400a c158b6e7 ae419f7a &lt;- here the message starts 289bcdc7 a9121f02 b68c67cf 4ec6ad36 d7aea416 &lt;- here it ends 96a83824 &lt;- bottom padding 142cf021</p>
 
 
   </div>
@@ -256,49 +262,43 @@
       <pre class="lines">
 
 
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46</pre>
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/sender.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/common/sender.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_call'>call</span>
-  <span class='lparen'>(</span><span class='int'>1</span><span class='op'>..</span><span class='id identifier rubyid_number_of_random_messages_to_send'>number_of_random_messages_to_send</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__i'>_i</span><span class='op'>|</span>
-    <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span><span class='id identifier rubyid_random_8_byte_string'>random_8_byte_string</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
-  <span class='kw'>end</span>
+  <span class='id identifier rubyid_add_padding'>add_padding</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
+
   <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span><span class='id identifier rubyid_identifier'>identifier</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
-  <span class='comment'># connection.ping(number_of_message_frames.to_s(2).rjust(8, &#39;0&#39;))
-</span>  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span>
-    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_number_of_message_frames'>number_of_message_frames</span><span class='embexpr_end'>}</span><span class='tstring_content'>u</span><span class='embexpr_beg'>#{</span><span class='const'>SecureRandom</span><span class='period'>.</span><span class='id identifier rubyid_alphanumeric'>alphanumeric</span><span class='lparen'>(</span><span class='int'>8</span> <span class='op'>-</span> <span class='int'>1</span> <span class='op'>-</span> <span class='id identifier rubyid_number_of_message_frames'>number_of_message_frames</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span><span class='id identifier rubyid_encoded_message_size'>encoded_message_size</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
+
   <span class='id identifier rubyid_message'>message</span><span class='period'>.</span><span class='id identifier rubyid_parts'>parts</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_part'>part</span><span class='op'>|</span>
     <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span><span class='id identifier rubyid_part'>part</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
   <span class='kw'>end</span>
-  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_ping'>ping</span><span class='lparen'>(</span><span class='id identifier rubyid_random_8_byte_string'>random_8_byte_string</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_sleep'>sleep</span> <span class='id identifier rubyid_delay'>delay</span>
+
+  <span class='id identifier rubyid_add_padding'>add_padding</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -310,7 +310,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 14 18:39:13 2021 by
+  Generated on Wed Sep 15 08:41:49 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>

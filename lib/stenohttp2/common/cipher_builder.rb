@@ -1,4 +1,5 @@
 # typed: true
+
 require 'openssl'
 require 'sorbet-runtime'
 

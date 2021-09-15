@@ -271,6 +271,7 @@
       <pre class="lines">
 
 
+10
 11
 12
 13
@@ -278,11 +279,10 @@
 15
 16
 17
-18
-19</pre>
+18</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>server:</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@server</span> <span class='op'>=</span> <span class='id identifier rubyid_server'>server</span>
@@ -351,12 +351,12 @@
       <pre class="lines">
 
 
+49
 50
-51
-52</pre>
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_response='>send_response=</span><span class='lparen'>(</span><span class='id identifier rubyid_value'>value</span><span class='rparen'>)</span>
   <span class='ivar'>@send_response</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span>
@@ -388,6 +388,7 @@
       <pre class="lines">
 
 
+20
 21
 22
 23
@@ -410,11 +411,10 @@
 40
 41
 42
-43
-44</pre>
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_handle'>handle</span><span class='lparen'>(</span><span class='id identifier rubyid_payload'>payload</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='lbracket'>[</span><span class='const'>ENV</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>SERVER_IDENTIFIER</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="../Client.html" title="Stenohttp2::Client (module)">Client</a></span></span><span class='op'>::</span><span class='const'>CLIENT_IDENTIFIER</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_payload'>payload</span><span class='rparen'>)</span>
@@ -482,12 +482,12 @@
       <pre class="lines">
 
 
+45
 46
-47
-48</pre>
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/ping_handler.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_send_response?'>send_response?</span>
   <span class='ivar'>@send_response</span>
@@ -502,7 +502,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Jul 14 18:39:13 2021 by
+  Generated on Wed Sep 15 08:41:49 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>
