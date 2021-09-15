@@ -5,7 +5,6 @@ require 'sorbet-runtime'
 
 module Stenohttp2
   module Common
-
     class Sender
       extend T::Sig
 

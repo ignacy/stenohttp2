@@ -3,7 +3,6 @@ require 'sorbet-runtime'
 
 module Stenohttp2
   module Common
-
     class CipherBuilder
       extend T::Sig
 
