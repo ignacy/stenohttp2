@@ -22,9 +22,12 @@ jobs:
           ruby-version: 3.0.1
           # runs 'bundle install' and caches installed gems automatically
           bundler-cache: true
-            
+
+      - name: Run sorbet tc
+        run: srb tc
+
       - name: Run rubocop
         run: bundle exec rubocop
 
       - name: Run tests
-        run: bundle exec rspec spec 
+        run: bundle exec rspec spec
