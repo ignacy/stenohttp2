@@ -1,11 +1,9 @@
 # typed: ignore
-require 'fileutils'
 
 module Stenohttp2
   module Server
     class PingHandler
-      SERVER_MESSAGES_DIR = 'tmp/server'.freeze
-      CLIENT_MESSAGES_DIR = 'tmp/client'.freeze
+      TIMESTAMP_FORMAT = '%Y-%m-%d-%H-%M'.freeze
 
       def initialize(server: true)
         @server = server
@@ -14,7 +12,6 @@ module Stenohttp2
         @count_processed = false
         @messages_left = 0
         @send_response = false
-        FileUtils.mkdir_p(messages_dir)
       end
 
       def handle(payload)
@@ -50,17 +47,23 @@ module Stenohttp2
 
       private
 
+      # We serialize and write messages send through hidden chanel to files
+      # which are timestampted for (one for every minute of conversation)
       def new_message_file
-        timestamp = Time.now.strftime('%Y-%m-%d-%H-%M')
+        timestamp = Time.now.strftime(TIMESTAMP_FORMAT)
         File.open("#{messages_dir}/#{timestamp}.message", 'a')
       end
 
       def messages_dir
-        if @server
-          SERVER_MESSAGES_DIR
-        else
-          CLIENT_MESSAGES_DIR
-        end
+        @server ? server_dir : client_dir
+      end
+
+      def server_dir
+        @server_dir ||= ENV.fetch('SERVER_DIR')
+      end
+
+      def client_dir
+        @client_dir ||= ENV.fetch('CLIENT_DIR')
       end
     end
   end

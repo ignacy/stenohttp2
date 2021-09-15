@@ -4,7 +4,6 @@ require 'bundler/setup'
 require_relative '../lib/stenohttp2'
 require 'fileutils'
 
-SERVER_DIR = 'tmp/server'.freeze
-
-FileUtils.mkdir_p SERVER_DIR
-Stenohttp2::Common::Watcher.new(SERVER_DIR).start
+server_dir = ENV.fetch('SERVER_DIR')
+FileUtils.mkdir_p server_dir
+Stenohttp2::Common::Watcher.new(server_dir).start
