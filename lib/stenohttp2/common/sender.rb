@@ -12,7 +12,7 @@ module Stenohttp2
       sig do
         params(
           message: Message,
-          connection: T.any(HTTP2::Client, HTTP2::Server),
+          connection: T.untyped,
           identifier: String,
           delay: T.any(Float, Integer)
         ).void
