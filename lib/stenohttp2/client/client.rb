@@ -33,7 +33,9 @@ module Stenohttp2
         Thread.kill(pinger)
 
         ::Stenohttp2::Common::Sender.new(
-          message: ::Stenohttp2::Common::Message.new('Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'),
+          message: ::Stenohttp2::Common::Message.new(
+            'Witaj świecie. Tajne dane: płatki owsiane, banan, orechy włoskie, jabłko'
+          ),
           connection: conn,
           identifier: CLIENT_IDENTIFIER,
           delay: CLIENT_PING_DELAY

@@ -1,20 +1,20 @@
 # typed: true
 # frozen_string_literal: true
 
-require "base64"
-require "cgi"
-require "dotenv"
-require "fileutils"
-require "forwardable"
-require "http/2"
-require "http/2/client"
-require "http/2/connection"
-require "http/2/server"
-require "listen"
-require "openssl"
-require "optparse"
-require "securerandom"
-require "socket"
-require "sorbet-runtime"
-require "uri"
-require "zeitwerk"
+require 'base64'
+require 'cgi'
+require 'dotenv'
+require 'fileutils'
+require 'forwardable'
+require 'http/2'
+require 'http/2/client'
+require 'http/2/connection'
+require 'http/2/server'
+require 'listen'
+require 'openssl'
+require 'optparse'
+require 'securerandom'
+require 'socket'
+require 'sorbet-runtime'
+require 'uri'
+require 'zeitwerk'

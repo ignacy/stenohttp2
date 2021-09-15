@@ -30,7 +30,7 @@ module Stenohttp2
             end
           end
 
-          connection.on(:stream) { |s|::Stenohttp2::Server::StreamHandler.new(s).setup }
+          connection.on(:stream) { |s| ::Stenohttp2::Server::StreamHandler.new(s).setup }
         end
       end
       # rubocop:enable Metrics/AbcSize
