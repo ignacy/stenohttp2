@@ -1,7 +1,5 @@
 # typed: ignore
 
-require 'fileutils'
-
 module Stenohttp2
   module Server
     class PingHandler
@@ -36,11 +34,11 @@ module Stenohttp2
 
         after_transition any => :count_consumed do |handler, _transition|
           handler.messages_left = handler.payload.to_s.split('u').first.to_i
-          handler.file = handler.read_or_create_file
+          handler.read_or_create_file
         end
 
         before_transition any => :consuming do |handler, _transition|
-          handler.file = handler.read_or_create_file
+          handler.read_or_create_file
           handler.messages_left -= 1
         end
       end
@@ -79,16 +77,17 @@ module Stenohttp2
       end
       # rubocop:enable Metrics/AbcSize
 
-      def file_name
-        "#{messages_dir}/#{Time.now.strftime(TIMESTAMP_FORMAT)}.message"
-      end
-
       def read_or_create_file
-        FileUtils.mkdir_p "tmp/#{messages_dir}"
-        File.open(file_name, 'a')
+        return unless file.nil?
+
+        self.file = File.open(file_name, 'a')
       end
 
       private
+
+      def file_name
+        "#{messages_dir}/#{Time.now.strftime(TIMESTAMP_FORMAT)}.message"
+      end
 
       def messages_dir
         @server ? server_dir : client_dir

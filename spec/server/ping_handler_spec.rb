@@ -1,9 +1,15 @@
 # typed: false
 
 require 'spec_helper'
+require 'fileutils'
 
 RSpec.describe Stenohttp2::Server::PingHandler do
   subject { described_class.new }
+
+  before do
+    FileUtils.mkdir_p('tmp/server')
+    FileUtils.mkdir_p('tmp/client')
+  end
 
   context '#waiting' do
     it 'begins in the ready state' do
