@@ -10,7 +10,9 @@ require 'uri'
 module Stenohttp2
   module Common
     class Logger
-      def initialize(id)
+      DEFAULT_STREAM_IDENTIFIER = 1
+
+      def initialize(id = DEFAULT_STREAM_IDENTIFIER)
         @id = id
       end
 

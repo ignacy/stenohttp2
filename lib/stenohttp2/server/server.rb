@@ -19,33 +19,40 @@ module Stenohttp2
       end
 
       def start
-        puts "Server listening on #{url}"
+        log.info "Server listening on #{url}"
 
         loop do
-          sock = server.accept
-          connection_handler = ::Stenohttp2::Server::Handler.new(sock).setup
+          connection = server.accept
 
-          while !sock.closed? && !(begin
-            sock.eof?
-          rescue StandardError
-            true
-          end)
-            data = sock.readpartial(BUFFER_SIZE)
+          Thread.start(connection) do |connection|
+            connection_handler = ::Stenohttp2::Server::Handler.new(connection).setup
 
-            begin
-              connection_handler.receive(data)
-            rescue StandardError => e
-              puts "#{e.class} exception: #{e.message} - closing socket."
-              T.must(e.backtrace).each { |l| puts "\t#{l}" }
-              sock.close
+            while !connection.closed? && !(begin
+                                       connection.eof?
+                                     rescue StandardError
+                                       true
+                                     end)
+              data = connection.readpartial(BUFFER_SIZE)
+
+              begin
+                connection_handler.receive(data)
+              rescue StandardError => e
+                log.error "#{e.class} exception: #{e.message} - closing connectionet."
+                T.must(e.backtrace).each { |l| puts "\t#{l}" }
+                connection.close
+              end
             end
-          end
+          end.join
         end
       end
 
       private
 
       attr_reader :server, :url
+
+      def log
+        @log ||= ::Stenohttp2::Common::Logger.new
+      end
     end
   end
 end
