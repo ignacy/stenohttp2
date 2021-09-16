@@ -61,12 +61,48 @@
 
 <h1 id="steganography-in-http2">Steganography in HTTP/2</h1>
 
-<p>Use features available in HTTP/2 to build a secure hidden channel for
-communication.</p>
+<p><a href="https://www.wikiwand.com/en/HTTP/2">http2</a> felt like a major step forward from http1. Things like connection multiplexing and header compression decreased network load and improved speed for many applications without requiring them to change anything.</p>
+
+<p>But the whole <a href="https://datatracker.ietf.org/doc/html/rfc7540">http/2 RFC</a> felt like a revolution compared to simpler text like semantics of http/1.</p>
+
+<p>This project implements a hidden channel communication based on http/2 features in an effort to learn more about the protocol.</p>
+
+<h1 id="steganography">Steganography</h1>
+
+<p>Steganography is a way of hidding a message in a communication in a way that not only the message is unreadable (by cryptografic measures) but the presence of communication itself is hidden from anyone watching.</p>
+
+<h1 id="potential-hidden-channels-in-http2">Potential hidden channels in HTTP/2</h1>
+
+<p>There are many ways one can go about implementing a hidden channel in http/2, in part this is possible because the protocol is so much more complex than previous version. For a great overview you can read this <a href="https://www.scirp.org/journal/paperinformation.aspx?paperid=75115">paper</a>.</p>
+
+<p>For my implementation I selected <a href="https://datatracker.ietf.org/doc/html/rfc7540#section-6.7">PING frames</a></p>
+
+<h1 id="technical-notes">Technical notes</h1>
+
+<p>This project is using Ruby with <a href="https://github.com/igrigorik/http-2">http2 gem</a>.
+One interesting aspect is that I used Sorbet for typechecking in most of the places.</p>
+
+<p>This is a complete implementation but it should not be used in a production setup: the keys for OpenSSL are part of this repository, a lot of data is hardcoded, so it all should be treated as a proof of concept.</p>
+
+<h1 id="usage">Usage</h1>
+
+<p>This project has server and client components. Each of those in turn has watcher and main processes. The idea is that server could work as usual HTTP server,
+client as regular HTTP client but the watcher processes allow you to view the conversation that is happening behind the scenes.</p>
+
+<p>To see it action (presumably in separate tabs or in the background) you need to run the 4 following processes:</p>
+
+<p><code>sh
+bin/client_watcher
+bin/server_watcher
+bin/server
+bin/client
+</code></p>
+
+<p>The only important thing is that the client should be run after the server.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Wed Sep 15 11:27:38 2021 by
+  Generated on Thu Sep 16 19:45:14 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>

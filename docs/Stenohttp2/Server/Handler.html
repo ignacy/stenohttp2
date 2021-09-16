@@ -178,9 +178,7 @@
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>rubocop:disable Metrics/AbcSize.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -251,23 +249,13 @@
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>rubocop:disable Metrics/AbcSize</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
+17
 18
 19
 20
@@ -285,28 +273,35 @@
 32
 33
 34
-35</pre>
+35
+36
+37
+38</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/handler.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/stenohttp2/server/handler.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_setup'>setup</span>
-  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_connection'>connection</span><span class='op'>|</span>
-    <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:frame</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_bytes'>bytes</span><span class='op'>|</span>
-      <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>TCPSocket</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_sendmsg'>sendmsg</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span>
-    <span class='kw'>end</span>
-
-    <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:frame_received</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_frame'>frame</span><span class='op'>|</span>
-      <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_handle'>handle</span><span class='lparen'>(</span><span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:payload</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:type</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='symbol'>:ping</span> <span class='op'>&amp;&amp;</span> <span class='op'>!</span><span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:flags</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='symbol'>:ack</span><span class='rparen'>)</span>
-
-      <span class='kw'>if</span> <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_send_response?'>send_response?</span>
-        <span class='id identifier rubyid_sender'>sender</span><span class='lparen'>(</span><span class='id identifier rubyid_connection'>connection</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
-        <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_send_response'>send_response</span> <span class='op'>=</span> <span class='kw'>false</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-
-    <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:stream</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Stenohttp2.html" title="Stenohttp2 (module)">Stenohttp2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Server.html" title="Stenohttp2::Server (module)">Server</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StreamHandler.html" title="Stenohttp2::Server::StreamHandler (class)">StreamHandler</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="StreamHandler.html#initialize-instance_method" title="Stenohttp2::Server::StreamHandler#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_setup'><span class='object_link'><a href="StreamHandler.html#setup-instance_method" title="Stenohttp2::Server::StreamHandler#setup (method)">setup</a></span></span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:frame</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_bytes'>bytes</span><span class='op'>|</span>
+    <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>TCPSocket</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_sendmsg'>sendmsg</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id identifier rubyid_socket'>socket</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_bytes'>bytes</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+
+  <span class='comment'># Here is where the magic happens: we treat PING frames a bit
+</span>  <span class='comment'># differently than in a usual flow, where those would be used only to
+</span>  <span class='comment'># check stream/connection latency
+</span>  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:frame_received</span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_frame'>frame</span><span class='op'>|</span>
+    <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_handle'>handle</span><span class='lparen'>(</span><span class='id identifier rubyid_frame'>frame</span><span class='rparen'>)</span>
+
+    <span class='kw'>if</span> <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_responding?'>responding?</span>
+      <span class='id identifier rubyid_sender'>sender</span><span class='lparen'>(</span><span class='id identifier rubyid_connection'>connection</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
+      <span class='id identifier rubyid_ping_handler'>ping_handler</span><span class='period'>.</span><span class='id identifier rubyid_done'>done</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='comment'># We still want to handle streaming for regular communication, like
+</span>  <span class='comment'># sending html content
+</span>  <span class='id identifier rubyid_connection'>connection</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='symbol'>:stream</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='op'>::</span><span class='const'><span class='object_link'><a href="../../Stenohttp2.html" title="Stenohttp2 (module)">Stenohttp2</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../Server.html" title="Stenohttp2::Server (module)">Server</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="StreamHandler.html" title="Stenohttp2::Server::StreamHandler (class)">StreamHandler</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="StreamHandler.html#initialize-instance_method" title="Stenohttp2::Server::StreamHandler#initialize (method)">new</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_s'>s</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_setup'><span class='object_link'><a href="StreamHandler.html#setup-instance_method" title="Stenohttp2::Server::StreamHandler#setup (method)">setup</a></span></span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_connection'>connection</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -318,7 +313,7 @@
 </div>
 
       <div id="footer">
-  Generated on Wed Sep 15 11:27:39 2021 by
+  Generated on Thu Sep 16 19:45:14 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-3.0.1).
 </div>
