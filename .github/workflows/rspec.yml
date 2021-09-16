@@ -17,6 +17,8 @@ jobs:
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
+        env:
+          SERVER_IDENTIFIER: ${{ secrets.SERVER_IDENTIFIER }}
         with:
           # Not needed with a .ruby-version file
           ruby-version: 3.0.1
