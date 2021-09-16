@@ -18,20 +18,21 @@ module Stenohttp2
         @server = ServerFactory.new(@port).start
       end
 
+      # rubocop:disable Metrics/AbcSize
       def start
         log.info "Server listening on #{url}"
 
         loop do
-          connection = server.accept
+          client_connection = server.accept
 
-          Thread.start(connection) do |connection|
+          Thread.start(client_connection) do |connection|
             connection_handler = ::Stenohttp2::Server::Handler.new(connection).setup
 
             while !connection.closed? && !(begin
-                                       connection.eof?
-                                     rescue StandardError
-                                       true
-                                     end)
+              connection.eof?
+            rescue StandardError
+              true
+            end)
               data = connection.readpartial(BUFFER_SIZE)
 
               begin
@@ -45,6 +46,7 @@ module Stenohttp2
           end.join
         end
       end
+      # rubocop:enable Metrics/AbcSize
 
       private
 
