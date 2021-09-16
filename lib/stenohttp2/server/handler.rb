@@ -14,7 +14,6 @@ module Stenohttp2
         @connection = ::HTTP2::Server.new
       end
 
-      # rubocop:disable Metrics/AbcSize
       def setup
         connection.on(:frame) do |bytes|
           socket.is_a?(TCPSocket) ? socket.sendmsg(bytes) : socket.write(bytes)
@@ -24,7 +23,7 @@ module Stenohttp2
         # differently than in a usual flow, where those would be used only to
         # check stream/connection latency
         connection.on(:frame_received) do |frame|
-          ping_handler.handle(frame[:payload]) if handle_frame?(frame)
+          ping_handler.handle(frame)
 
           if ping_handler.responding?
             sender(connection).call
@@ -37,7 +36,6 @@ module Stenohttp2
         connection.on(:stream) { |s| ::Stenohttp2::Server::StreamHandler.new(s).setup }
         connection
       end
-      # rubocop:enable Metrics/AbcSize
 
       private
 
@@ -45,14 +43,8 @@ module Stenohttp2
         @ping_handler ||= ::Stenohttp2::Server::PingHandler.new(server: true)
       end
 
-      # We are only interested in PING farmes without ACK flag
-      # because the ones with ACK include just the repeated contend
-      def handle_frame?(frame)
-        frame[:type] == :ping && !frame[:flags].include?(:ack)
-      end
-
       def response_message
-        ::Stenohttp2::Common::Message.new('message received.')
+        ::Stenohttp2::Common::Message.new('All good. Message received.')
       end
 
       def sender(connection)

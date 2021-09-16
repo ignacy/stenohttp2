@@ -25,7 +25,7 @@ module Stenohttp2
           ctx.ciphers = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers]
           ctx.alpn_protocols = ['h2']
           ctx.alpn_select_cb = lambda do |protocols|
-            raise "Protocol #{'h2'} is required" if protocols.index('h2').nil?
+            raise 'Protocol h2 is required' if protocols.index('h2').nil?
 
             'h2'
           end

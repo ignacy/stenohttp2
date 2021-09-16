@@ -9,9 +9,8 @@ module Stenohttp2
         ::Stenohttp2::Client::Client::CLIENT_IDENTIFIER
       ].freeze
 
-      attr_accessor :messages_left, :send_response, :payload
+      attr_accessor :messages_left, :send_response, :payload, :file
 
-      # rubocop:disable Metrics/BlockLength
       state_machine :state, initial: :waiting do
         event :start_reciving do
           transition waiting: :reciving
@@ -35,75 +34,52 @@ module Stenohttp2
 
         after_transition any => :count_consumed do |handler, _transition|
           handler.messages_left = handler.payload.to_s.split('u').first.to_i
+          handler.file = File.open(handler.file_name, 'a')
         end
 
-        after_transition any => :consuming do |_hadler, _transition|
+        before_transition any => :consuming do |handler, _transition|
+          handler.file = File.open(handler.file_name, 'a') if handler.file.nil?
           handler.messages_left -= 1
         end
-
-        state :waiting do
-          def current_file
-            nil
-          end
-        end
-
-        state :reciving do
-          def current_file
-            new_message_file
-          end
-        end
-
-        state :count_consumed do
-          def current_file
-            new_message_file
-          end
-        end
-
-        state :consuming do
-          def current_file
-            new_message_file
-          end
-        end
-
-        state :responding do
-          def current_file
-            nil
-          end
-        end
       end
-      # rubocop:enable Metrics/BlockLength
+
       def initialize(server: true)
         @server = server
         @messages_left = 0
+        @file = nil
         @payload = nil
         super()
       end
 
-      def handle(new_payload)
-        payload = new_payload
+      # rubocop:disable Metrics/AbcSize
+      def handle(frame)
+        # We are only interested in PING farmes without ACK flag
+        # because the ones with ACK include just the repeated contend
+        return unless frame[:type] == :ping && !frame[:flags].include?(:ack)
+
+        self.payload = frame[:payload]
+
         start_reciving and return if IDENTIFIERS.include?(payload)
 
-        return unless reciving?
+        return if waiting?
 
         consume_count and return unless count_consumed?
 
         if messages_left.positive?
-          current_file.write(payload)
+          file.write(payload)
           consume_message
         elsif messages_left.zero?
-          current_file.close
+          file.close
           ready_to_respond
         end
       end
+      # rubocop:enable Metrics/AbcSize
+
+      def file_name
+        "#{messages_dir}/#{Time.now.strftime(TIMESTAMP_FORMAT)}.message"
+      end
 
       private
-
-      # We serialize and write messages send through hidden chanel to files
-      # which are timestampted for (one for every minute of conversation)
-      def new_message_file
-        timestamp = Time.now.strftime(TIMESTAMP_FORMAT)
-        File.open("#{messages_dir}/#{timestamp}.message", 'a')
-      end
 
       def messages_dir
         @server ? server_dir : client_dir

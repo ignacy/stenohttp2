@@ -71,9 +71,7 @@ module Stenohttp2
           socket.is_a?(TCPSocket) ? socket.sendmsg(bytes) : socket.write(bytes)
         end
 
-        conn.on(:frame_received) do |frame|
-          ping_handler.handle(frame[:payload]) if frame[:type] == :ping && !frame[:flags].include?(:ack)
-        end
+        conn.on(:frame_received) { |frame| ping_handler.handle(frame) }
       end
 
       def setup_stream_handlers
@@ -121,7 +119,7 @@ module Stenohttp2
             sock.hostname = server_uri.hostname
             sock.connect
 
-            raise "Failed to negotiate h2 via ALPN" if sock.alpn_protocol != 'h2'
+            raise 'Failed to negotiate h2 via ALPN' if sock.alpn_protocol != 'h2'
 
             sock
           else
