@@ -7,8 +7,6 @@ require 'openssl'
 require 'http/2'
 require 'uri'
 
-DRAFT = 'h2'
-
 module Stenohttp2
   module Common
     class Logger

@@ -9,45 +9,92 @@ module Stenohttp2
         ::Stenohttp2::Client::Client::CLIENT_IDENTIFIER
       ].freeze
 
-      def initialize(server: true)
-        @server = server
-        @reciving = false
-        @current_file = nil
-        @count_processed = false
-        @messages_left = 0
-        @send_response = false
-      end
+      attr_accessor :messages_left, :send_response, :payload
 
-      def handle(payload)
-        if IDENTIFIERS.include?(payload)
-          @reciving = true
-          @current_file = new_message_file
-        elsif @reciving
-          if !@count_processed
-            # First ping has the message count
-            @messages_left = payload.to_s.split('u').first.to_i
-            @count_processed = true
-          elsif @messages_left.positive?
-            @current_file.write(payload)
-            @messages_left -= 1
-          elsif @messages_left.zero?
-            @current_file.close
-            @current_file = nil
-            @reciving = false
-            @send_response = true
-          else
-            puts "Ignoring #{payload}"
+      # rubocop:disable Metrics/BlockLength
+      state_machine :state, initial: :waiting do
+        event :start_reciving do
+          transition waiting: :reciving
+        end
+
+        event :consume_count do
+          transition reciving: :count_consumed
+        end
+
+        event :consume_message do
+          transition %i[count_consumed consuming] => :consuming
+        end
+
+        event :ready_to_respond do
+          transition any => :responding
+        end
+
+        event :done do
+          transition any => :waiting
+        end
+
+        after_transition any => :count_consumed do |handler, _transition|
+          handler.messages_left = handler.payload.to_s.split('u').first.to_i
+        end
+
+        after_transition any => :consuming do |_hadler, _transition|
+          handler.messages_left -= 1
+        end
+
+        state :waiting do
+          def current_file
+            nil
           end
-        else
-          puts "Not reciving / Ignoring #{payload}"
+        end
+
+        state :reciving do
+          def current_file
+            new_message_file
+          end
+        end
+
+        state :count_consumed do
+          def current_file
+            new_message_file
+          end
+        end
+
+        state :consuming do
+          def current_file
+            new_message_file
+          end
+        end
+
+        state :responding do
+          def current_file
+            nil
+          end
         end
       end
-
-      def send_response?
-        @send_response
+      # rubocop:enable Metrics/BlockLength
+      def initialize(server: true)
+        @server = server
+        @messages_left = 0
+        @payload = nil
+        super()
       end
 
-      attr_writer :send_response
+      def handle(new_payload)
+        payload = new_payload
+        start_reciving and return if IDENTIFIERS.include?(payload)
+
+        return unless reciving?
+
+        consume_count and return unless count_consumed?
+
+        if messages_left.positive?
+          current_file.write(payload)
+          consume_message
+        elsif messages_left.zero?
+          current_file.close
+          ready_to_respond
+        end
+      end
 
       private
 

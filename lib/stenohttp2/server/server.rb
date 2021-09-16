@@ -4,18 +4,16 @@
 require 'securerandom'
 require 'uri'
 require 'sorbet-runtime'
-require 'forwardable'
 
 module Stenohttp2
   module Server
     class Server
       extend T::Sig
-      extend Forwardable
-      def_delegators :@url, :port
 
       sig { params(url: URI).void }
       def initialize(url:)
         @url = url
+        @port = @url.port
         @server = ServerFactory.new(@port).start
       end
 

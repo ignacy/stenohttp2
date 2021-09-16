@@ -48,7 +48,7 @@ module Stenohttp2
         end
 
         stream.headers(post_request, end_stream: false) # POST data
-        stream.data(SecureRangom.hex(20)) # Post some random data to the server
+        stream.data(SecureRandom.hex(20)) # Post some random data to the server
 
         Thread.kill(pinger)
         while !socket.closed? && !socket.eof?
@@ -110,10 +110,10 @@ module Stenohttp2
           if server_uri.scheme == 'https'
             ctx = OpenSSL::SSL::SSLContext.new
             ctx.verify_mode = OpenSSL::SSL::VERIFY_NONE
-            ctx.alpn_protocols = [DRAFT]
+            ctx.alpn_protocols = ['h2']
             ctx.alpn_select_cb = lambda do |protocols|
               log.warn "ALPN protocols supported by server: #{protocols}"
-              DRAFT if protocols.include? DRAFT
+              'h2' if protocols.include? 'h2'
             end
 
             sock = OpenSSL::SSL::SSLSocket.new(tcp, ctx)
@@ -121,7 +121,7 @@ module Stenohttp2
             sock.hostname = server_uri.hostname
             sock.connect
 
-            raise "Failed to negotiate #{DRAFT} via ALPN" if sock.alpn_protocol != DRAFT
+            raise "Failed to negotiate h2 via ALPN" if sock.alpn_protocol != 'h2'
 
             sock
           else

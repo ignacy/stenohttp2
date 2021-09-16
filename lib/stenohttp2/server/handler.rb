@@ -26,9 +26,9 @@ module Stenohttp2
         connection.on(:frame_received) do |frame|
           ping_handler.handle(frame[:payload]) if handle_frame?(frame)
 
-          if ping_handler.send_response?
+          if ping_handler.responding?
             sender(connection).call
-            ping_handler.send_response = false
+            ping_handler.done
           end
         end
 

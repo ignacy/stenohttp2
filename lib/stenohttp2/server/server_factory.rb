@@ -23,11 +23,11 @@ module Stenohttp2
           ctx.ssl_version = :TLSv1_2
           ctx.options = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:options]
           ctx.ciphers = OpenSSL::SSL::SSLContext::DEFAULT_PARAMS[:ciphers]
-          ctx.alpn_protocols = [DRAFT]
+          ctx.alpn_protocols = ['h2']
           ctx.alpn_select_cb = lambda do |protocols|
-            raise "Protocol #{DRAFT} is required" if protocols.index(DRAFT).nil?
+            raise "Protocol #{'h2'} is required" if protocols.index('h2').nil?
 
-            DRAFT
+            'h2'
           end
           ctx.ecdh_curves = 'P-256'
         end
