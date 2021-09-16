@@ -9,6 +9,7 @@ module Stenohttp2
   module Server
     class Server
       extend T::Sig
+      BUFFER_SIZE = 1024
 
       sig { params(url: URI).void }
       def initialize(url:)
@@ -19,6 +20,7 @@ module Stenohttp2
 
       def start
         puts "Server listening on #{url}"
+
         loop do
           sock = server.accept
           connection_handler = ::Stenohttp2::Server::Handler.new(sock).setup
@@ -28,7 +30,7 @@ module Stenohttp2
           rescue StandardError
             true
           end)
-            data = sock.readpartial(1024)
+            data = sock.readpartial(BUFFER_SIZE)
 
             begin
               connection_handler.receive(data)
