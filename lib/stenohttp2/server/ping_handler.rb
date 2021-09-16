@@ -68,10 +68,12 @@ module Stenohttp2
         if messages_left.positive?
           file.write(payload)
           consume_message
-        elsif messages_left.zero?
-          file.close
-          ready_to_respond
         end
+
+        return unless messages_left.zero?
+
+        file.close
+        ready_to_respond
       end
       # rubocop:enable Metrics/AbcSize
 
